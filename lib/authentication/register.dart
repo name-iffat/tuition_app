@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tuition_app/widgets/custom_text_field.dart';
 import 'package:tuition_app/widgets/error_dialog.dart';
+import 'package:tuition_app/widgets/loading_dialog.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -29,6 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Position? position;
   List<Placemark>? placeMark;
+
+  String parentImageUrl = "";
 
   Future<void> _getImage() async
   {
@@ -72,11 +76,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
     else{
       if(passwordController.text == confirmPasswordController.text)
         {
-          //start uploading
-
           if(confirmPasswordController.text.isNotEmpty && emailController.text.isNotEmpty && nameController.text.isNotEmpty && phoneController.text.isNotEmpty && locationController.text.isNotEmpty)
           {
             //start uploading image
+            showDialog(
+              context: context,
+              builder: (c)
+                {
+                  return LoadingDialog(
+                    message: "Registering Account",
+                  );
+                }
+            );
+
+            String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+            fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("parents").child(fileName);
+            fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
+            fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+            await taskSnapshot.ref.getDownloadURL().then((url) {
+              parentImageUrl = url;
+
+              //save info to firestore
+
+            });
           }
           else
             {
