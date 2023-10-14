@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tuition_app/widgets/custom_text_field.dart';
+import 'package:tuition_app/widgets/error_dialog.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -55,6 +56,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     locationController.text = completeAddress;
     print(locationController);
+  }
+
+  Future<void> formValidation() async {
+    if(imageXFile == null){
+      showDialog(
+        context: context,
+        builder: (c){
+          return ErrorDialog(
+            message: "Please select an image.",
+          );
+        }
+      );
+    }
+    else{
+      if(passwordController.text == confirmPasswordController.text)
+        {
+          //start uploading
+
+          if(confirmPasswordController.text.isNotEmpty && emailController.text.isNotEmpty && nameController.text.isNotEmpty && phoneController.text.isNotEmpty && locationController.text.isNotEmpty)
+          {
+            //start uploading image
+          }
+          else
+            {
+              showDialog(
+                  context: context,
+                  builder: (c){
+                    return ErrorDialog(
+                      message: "Please complete the required info for registration.",
+                    );
+                  }
+              );
+            }
+        }
+      else
+        {
+          showDialog(
+              context: context,
+              builder: (c){
+                return ErrorDialog(
+                  message: "Password do not match.",
+                );
+              }
+          );
+        }
+    }
   }
 
   @override
@@ -164,7 +211,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 primary: Colors.purple,
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
               ),
-              onPressed: ()=> print("clicked"),
+              onPressed: (){
+                formValidation();
+              },
             ),
             const SizedBox(height: 30,),
           ],
