@@ -1,13 +1,19 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/widgets/custom_text_field.dart';
 import 'package:tuition_app/widgets/error_dialog.dart';
 import 'package:tuition_app/widgets/loading_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+
+import '../global/global.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -33,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   List<Placemark>? placeMark;
 
   String parentImageUrl = "";
+  String completeAddress ="";
 
   Future<void> _getImage() async
   {
@@ -56,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
     Placemark pMark = placeMark![0];
 
-    String completeAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}, ${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}, ${pMark.country}';
+    completeAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}, ${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}, ${pMark.country}';
 
     locationController.text = completeAddress;
     print(locationController);
@@ -84,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               builder: (c)
                 {
                   return LoadingDialog(
-                    message: "Registering Account",
+                    message: "Registering Account. ",
                   );
                 }
             );
@@ -97,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               parentImageUrl = url;
 
               //save info to firestore
+              authenticateParentAndSignUp();
 
             });
           }
@@ -124,6 +132,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         }
     }
+  }
+
+  void authenticateParentAndSignUp() async
+  {
+    User? currentUser;
+
+    await firebaseAuth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+    ).then((auth){
+      currentUser = auth.user;
+    }).catchError((error){
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c){
+            return ErrorDialog(
+              message: error.message.toString(),
+            );
+          }
+      );
+    });
+
+    if(currentUser != null)
+      {
+        saveDataToFirestore(currentUser!).then((value) {
+          Navigator.pop(context);
+          //send user to homePage
+          Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
+          Navigator.pushReplacement(context, newRoute);
+        });
+      }
+  }
+
+  Future saveDataToFirestore(User currentUser) async
+  {
+    FirebaseFirestore.instance.collection("parents").doc(currentUser.uid).set({
+      "parentUID": currentUser.uid,
+      "parentEmail": currentUser.email,
+      "parentName" : nameController.text.trim(),
+      "parentAvatarUrl" : parentImageUrl,
+      "phone" : phoneController.text.trim(),
+      "address" : completeAddress,
+      "status" : "approved",
+      "earnings" : 0.0,
+      "lat" : position!.latitude,
+      "lng" : position!.longitude
+    });
+
+    //save data locally
+    sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences!.setString("uid", currentUser.uid);
+    await sharedPreferences!.setString("email", currentUser.email.toString());
+    await sharedPreferences!.setString("name", nameController.text.trim());
+    await sharedPreferences!.setString("photoUrl", parentImageUrl);
   }
 
   @override
@@ -213,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         getCurrentLocation();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.amber,
+                        backgroundColor: Colors.amber,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         )
@@ -230,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Colors.purple,
+                backgroundColor: Colors.purple,
                 padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
               ),
               onPressed: (){
