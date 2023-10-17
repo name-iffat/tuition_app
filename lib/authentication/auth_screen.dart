@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/authentication/login.dart';
 import 'package:tuition_app/authentication/register.dart';
 
@@ -13,7 +14,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             flexibleSpace: Container(
@@ -49,6 +50,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     icon: Icon(Icons.person, color: Colors.white,),
                     text: "Register",
                   ),
+                  Tab(
+                    icon: Icon(Icons.ac_unit, color: Colors.white,),
+                    text: "Choose",
+                  ),
                 ],
                 indicatorColor: Colors.white38,
                 indicatorWeight: 6,
@@ -69,6 +74,7 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 LoginScreen(),
                 RegisterScreen(),
+                ChooseUser(),
               ],
             ),
           ),

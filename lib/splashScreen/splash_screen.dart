@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tuition_app/authentication/auth_screen.dart';
+import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 
@@ -27,7 +28,7 @@ class _MySplashScreenState extends State<MySplashScreen>
       //if parent not logged in
       else
         {
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
         }
     });
   }
