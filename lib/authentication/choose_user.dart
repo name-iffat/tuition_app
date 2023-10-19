@@ -8,6 +8,14 @@ class ChooseUser extends StatefulWidget {
   @override
   State<ChooseUser> createState() => _ChooseUserState();
 }
+void navigateToUserTypeScreen(BuildContext context, String userType){
+  print('User Type: $userType');
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (c) => AuthScreen(userType: userType),
+    ),
+  );
+}
 
 class _ChooseUserState extends State<ChooseUser> {
   @override
@@ -72,9 +80,7 @@ class _ChooseUserState extends State<ChooseUser> {
                       size: 35,
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (c) => AuthScreen()));
-                    },
+                      navigateToUserTypeScreen(context, "Parent");                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
@@ -103,8 +109,7 @@ class _ChooseUserState extends State<ChooseUser> {
                       size: 35,
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (c) => AuthScreen()));
+                      navigateToUserTypeScreen(context, "Tutor");
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/authentication/auth_screen.dart';
+import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           onPressed:(){
               firebaseAuth.signOut().then((value){
-                Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
               });
           },
         ),

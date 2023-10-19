@@ -4,7 +4,8 @@ import 'package:tuition_app/authentication/login.dart';
 import 'package:tuition_app/authentication/register.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({super.key, required this.userType});
+  final String userType;
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -13,8 +14,10 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
+    // Accessing the userType property of the AuthScreen widget
+    String userType = widget.userType;
     return DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             flexibleSpace: Container(
@@ -22,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 gradient: LinearGradient(
                   colors: [
                     Colors.cyan,
-                    Colors.amber,
+                    Colors.blue,
                   ],
                   begin: const FractionalOffset(0.0, 0.0),
                   end: const FractionalOffset(1.0, 0.0),
@@ -50,31 +53,26 @@ class _AuthScreenState extends State<AuthScreen> {
                     icon: Icon(Icons.person, color: Colors.white,),
                     text: "Register",
                   ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.white,),
-                    text: "Choose",
-                  ),
                 ],
                 indicatorColor: Colors.white38,
                 indicatorWeight: 6,
             ),
           ),
           body: Container(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Colors.amber,
-                  Colors.cyan
+                  Colors.cyan.shade200,
+                  Colors.white
                 ]
               )
             ),
-            child: const TabBarView(
+            child:  TabBarView(
               children: [
-                LoginScreen(),
-                RegisterScreen(),
-                ChooseUser(),
+                LoginScreen(userType: widget.userType),
+                RegisterScreen(userType: widget.userType),
               ],
             ),
           ),

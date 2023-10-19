@@ -16,8 +16,8 @@ import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 import '../global/global.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
-
+  const RegisterScreen({super.key,required this.userType});
+  final String userType;
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -97,16 +97,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
 
             String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-            fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("parents").child(fileName);
-            fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
-            fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-            await taskSnapshot.ref.getDownloadURL().then((url) {
-              parentImageUrl = url;
+            if(widget.userType == "Parent") {
+              fStorage.Reference reference = fStorage.FirebaseStorage.instance
+                  .ref().child("parents").child(fileName);
+              fStorage.UploadTask uploadTask = reference.putFile(
+                  File(imageXFile!.path));
+              fStorage.TaskSnapshot taskSnapshot = await uploadTask
+                  .whenComplete(() {});
+              await taskSnapshot.ref.getDownloadURL().then((url) {
+                parentImageUrl = url;
 
-              //save info to firestore
-              authenticateParentAndSignUp();
+                //save info to firestore
+                authenticateParentAndSignUp();
+              });
+            }
+            else if(widget.userType == "Tutor") {
+              fStorage.Reference reference = fStorage.FirebaseStorage.instance
+                  .ref().child("tutors").child(fileName);
+              fStorage.UploadTask uploadTask = reference.putFile(
+                  File(imageXFile!.path));
+              fStorage.TaskSnapshot taskSnapshot = await uploadTask
+                  .whenComplete(() {});
+              await taskSnapshot.ref.getDownloadURL().then((url) {
+                parentImageUrl = url;
 
-            });
+                //save info to firestore
+                authenticateParentAndSignUp();
+              });
+            }
+
           }
           else
             {
@@ -168,6 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future saveDataToFirestore(User currentUser) async
   {
+    if(widget.userType == "Parent"){
     FirebaseFirestore.instance.collection("parents").doc(currentUser.uid).set({
       "parentUID": currentUser.uid,
       "parentEmail": currentUser.email,
@@ -180,6 +200,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "lat" : position!.latitude,
       "lng" : position!.longitude
     });
+    }
+    else if(widget.userType == "Tutor")
+      {
+        FirebaseFirestore.instance.collection("tutors").doc(currentUser.uid).set({
+          "tutorUID": currentUser.uid,
+          "tutorEmail": currentUser.email,
+          "tutorName" : nameController.text.trim(),
+          "tutorAvatarUrl" : parentImageUrl,
+          "phone" : phoneController.text.trim(),
+          "address" : completeAddress,
+          "status" : "approved",
+          "earnings" : 0.0,
+          "lat" : position!.latitude,
+          "lng" : position!.longitude
+        });
+      }
 
     //save data locally
     sharedPreferences = await SharedPreferences.getInstance();
@@ -253,7 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     data: Icons.my_location,
                     controller: locationController,
-                    hintText: "Home Location",
+                    hintText: (widget.userType == "Parent") ? "Home Location" : "My Location",
                     isObsecre: false,
                     enabled: false,
                   ),
@@ -294,7 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
-                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 10),
               ),
               onPressed: (){
                 formValidation();

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/authentication/auth_screen.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/widgets/error_dialog.dart';
@@ -8,7 +9,8 @@ import 'package:tuition_app/widgets/loading_dialog.dart';
 import '../widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key,required this.userType});
+  final String userType;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -69,30 +71,84 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       if(currentUser != null)
         {
-          readDataAndSetDataLocally(currentUser!).then((value){
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
-          });
+          readDataAndSetDataLocally(currentUser!);
 
         }
     }
 
     Future readDataAndSetDataLocally(User currentUser) async
     {
+      if (widget.userType == "Parent") {
       await FirebaseFirestore.instance.collection("parents")
           .doc(currentUser.uid)
           .get().then((snapshot) async{
-            await sharedPreferences!.setString("uid", currentUser.uid);
-            await sharedPreferences!.setString("email", snapshot.data()!["parentEmail"]);
-            await sharedPreferences!.setString("name", snapshot.data()!["parentName"]);
-            await sharedPreferences!.setString("photoUrl", snapshot.data()!["parentAvatarUrl"]);
+        if (snapshot.exists) {
+          await sharedPreferences!.setString("uid", currentUser.uid);
+          await sharedPreferences!.setString(
+              "email", snapshot.data()!["parentEmail"]);
+          await sharedPreferences!.setString(
+              "name", snapshot.data()!["parentName"]);
+          await sharedPreferences!.setString(
+              "photoUrl", snapshot.data()!["parentAvatarUrl"]);
+
+          Navigator.pop(context);//remove loading dialog
+          Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+
+        }
+        else{
+          firebaseAuth.signOut();
+          Navigator.pop(context);//remove loading dialog
+          Navigator.push(context, MaterialPageRoute(builder: (c)=>  AuthScreen(userType: widget.userType)));
+          showDialog(
+              context: context,
+              builder: (c)
+              {
+                return ErrorDialog(
+                  message: "Account does not exist.",
+                );
+              }
+          );        }
 
       });
+      }
+      else if (widget.userType == "Tutor") {
+        await FirebaseFirestore.instance.collection("tutors")
+            .doc(currentUser.uid)
+            .get().then((snapshot) async{
+              if(snapshot.exists){
+                await sharedPreferences!.setString("uid", currentUser.uid);
+                await sharedPreferences!.setString("email", snapshot.data()!["tutorEmail"]);
+                await sharedPreferences!.setString("name", snapshot.data()!["tutorName"]);
+                await sharedPreferences!.setString("photoUrl", snapshot.data()!["tutorAvatarUrl"]);
+
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+              }
+              else{
+                firebaseAuth.signOut();
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (c)=>  AuthScreen(userType: widget.userType)));
+                showDialog(
+                    context: context,
+                    builder: (c)
+                    {
+                      return ErrorDialog(
+                        message: "Account does not exist.",
+                      );
+                    }
+                );        }
+
+        });
+      }
     }
 
 
   @override
   Widget build(BuildContext context) {
+    String imagePath = widget.userType == "Parent"
+        ? "images/parentlogin.png"
+        : "images/tutorlogin.png";
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -102,8 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Image.asset(
-                "images/seller.png",
-                    height: 270,
+                    imagePath,
+                    height: 300,
               ),
             ),
           ),
