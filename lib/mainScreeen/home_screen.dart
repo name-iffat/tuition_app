@@ -7,12 +7,14 @@ import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/widgets/info_design.dart';
 import 'package:tuition_app/widgets/my_drawer.dart';
+import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
 import '../models/tutors.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+   const HomeScreen({super.key,required this.userType});
+  final String userType;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -32,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget drawerPath = widget.userType == "Parent"
+        ? MyDrawer()
+        : MyDrawerTutor();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -53,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      drawer: MyDrawer(),
+      drawer: drawerPath,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(

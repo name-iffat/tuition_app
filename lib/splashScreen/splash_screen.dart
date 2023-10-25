@@ -8,6 +8,7 @@ import 'package:tuition_app/mainScreeen/home_screen.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
+
   //const MySplashScreen({Key?key}) : super(key:key);
 
   @override
@@ -23,7 +24,7 @@ class _MySplashScreenState extends State<MySplashScreen>
       //if user already logged in
       if(firebaseAuth.currentUser != null)
         {
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (c)=>  const HomeScreen(userType: '',)));
         }
       //if user not logged in
       else
