@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:tuition_app/authentication/auth_screen.dart';
-import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
+import 'package:tuition_app/uploadScreen/subjects_upload_screen.dart';
 import 'package:tuition_app/widgets/info_design.dart';
 import 'package:tuition_app/widgets/my_drawer.dart';
 import 'package:tuition_app/widgets/my_drawer_tutor.dart';
@@ -55,11 +55,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text(
           sharedPreferences!.getString("name")!,
+          style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
         ),
         centerTitle: true,
+        actions: widget.userType == "Tutor"
+        ? [
+          IconButton(
+            icon: const Icon(Icons.post_add, color: Colors.white,),
+            onPressed: ()
+            {
+              Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
+            },
+          ),
+        ] : null,
       ),
       drawer: drawerPath,
-      body: CustomScrollView(
+      body: widget.userType == "Parent"
+        ? CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
@@ -132,7 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
-      ),
+      )
+      : TutorHomeScreen(),
     );
   }
 }
