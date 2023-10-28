@@ -13,8 +13,7 @@ import 'package:tuition_app/widgets/progress_bar.dart';
 import '../models/tutors.dart';
 
 class HomeScreen extends StatefulWidget {
-   const HomeScreen({super.key,required this.userType});
-  final String userType;
+   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -34,9 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget drawerPath = widget.userType == "Parent"
-        ? MyDrawer()
-        : MyDrawerTutor();
+    String userType = sharedPreferences!.getString("usertype")! ;
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -58,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
         ),
         centerTitle: true,
-        actions: widget.userType == "Tutor"
+        actions: userType == "Tutor"
         ? [
           IconButton(
             icon: const Icon(Icons.post_add, color: Colors.white,),
@@ -69,9 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ] : null,
       ),
-      drawer: drawerPath,
-      body: widget.userType == "Parent"
-        ? CustomScrollView(
+      drawer: userType == "Parent" ? MyDrawer() : MyDrawerTutor(),
+      body: userType == "Parent"
+          ? CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
@@ -145,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       )
-      : TutorHomeScreen(),
+      : const TutorHomeScreen(),
     );
   }
 }

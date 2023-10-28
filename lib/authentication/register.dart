@@ -179,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         saveDataToFirestore(currentUser!).then((value) {
           Navigator.pop(context);
           //send user to homePage
-          Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen(userType: widget.userType));
+          Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
           Navigator.pushReplacement(context, newRoute);
         });
       }
@@ -198,7 +198,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "status" : "approved",
       "earnings" : 0.0,
       "lat" : position!.latitude,
-      "lng" : position!.longitude
+      "lng" : position!.longitude,
+      "userType" : "Parent"
     });
     }
     else if(widget.userType == "Tutor")
@@ -213,7 +214,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "status" : "approved",
           "earnings" : 0.0,
           "lat" : position!.latitude,
-          "lng" : position!.longitude
+          "lng" : position!.longitude,
+          "userType" : "Tutor"
         });
       }
 
@@ -223,6 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!.setString("name", nameController.text.trim());
     await sharedPreferences!.setString("photoUrl", parentImageUrl);
+    await sharedPreferences!.setString("usertype", widget.userType);
   }
 
   @override

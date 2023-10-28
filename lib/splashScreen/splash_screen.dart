@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tuition_app/authentication/auth_screen.dart';
 import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
@@ -20,16 +19,16 @@ class _MySplashScreenState extends State<MySplashScreen>
 
   startTimer()
   {
-    Timer(const Duration(seconds: 1), () async {
+    Timer(const Duration(seconds: 3), () async {
       //if user already logged in
       if(firebaseAuth.currentUser != null)
         {
-          Navigator.push(context, MaterialPageRoute(builder: (c)=>  const HomeScreen(userType: '',)));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
         }
       //if user not logged in
       else
         {
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
         }
     });
   }

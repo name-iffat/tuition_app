@@ -90,9 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
               "name", snapshot.data()!["parentName"]);
           await sharedPreferences!.setString(
               "photoUrl", snapshot.data()!["parentAvatarUrl"]);
+          await sharedPreferences!.setString(
+              "usertype", snapshot.data()!["userType"]);
 
           Navigator.pop(context);//remove loading dialog
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> HomeScreen(userType: widget.userType)));
+          Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
 
         }
         else{
@@ -120,10 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 await sharedPreferences!.setString("email", snapshot.data()!["tutorEmail"]);
                 await sharedPreferences!.setString("name", snapshot.data()!["tutorName"]);
                 await sharedPreferences!.setString("photoUrl", snapshot.data()!["tutorAvatarUrl"]);
+                await sharedPreferences!.setString(
+                    "usertype", snapshot.data()!["userType"]);
 
                 if (!context.mounted) return;
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (c)=>  HomeScreen(userType: widget.userType)));
+                Navigator.push(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
               }
               else{
                 firebaseAuth.signOut();

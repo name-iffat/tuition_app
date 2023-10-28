@@ -54,7 +54,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
           icon: const Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: ()
           {
-            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen(userType: "Tutor",)));
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
           },
         ),
 
