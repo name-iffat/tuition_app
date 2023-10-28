@@ -1,9 +1,12 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/widgets/progress_bar.dart';
 import '../mainScreeen/home_screen.dart';
+import '../widgets/error_dialog.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storageRef;
 
 class SubjectUploadScreen extends StatefulWidget {
   const SubjectUploadScreen({super.key});
@@ -18,6 +21,9 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
 
   TextEditingController shortInfoController = TextEditingController();
   TextEditingController titleController = TextEditingController();
+
+  bool uploading = false;
+  String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
 
   defaultScreen()
@@ -194,15 +200,13 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
                 fontFamily: "Bebas"
               ),
             ),
-            onPressed: ()
-            {
-
-            },
+            onPressed:uploading ? null : ()=> validateUploadForm(),
           ),
         ],
       ),
       body: ListView(
         children: [
+          uploading == true ? linearProgress() : const Text(""),
           Container(
             height: 230,
             width: MediaQuery.of(context).size.width * 0.8,
@@ -268,6 +272,88 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
       titleController.clear();
       imageXFile = null;
     });
+  }
+
+  validateUploadForm() async
+  {
+    if(imageXFile !=null)
+      {
+        if(shortInfoController.text.isNotEmpty && titleController.text.isNotEmpty)
+        {
+          setState(() {
+            uploading = true;
+          });
+
+          //upload image
+          String downloadUrl = await uploadImage(File(imageXFile!.path));
+
+
+          //save info to firebase
+          saveInfo(downloadUrl);
+        }
+        else
+          {
+            showDialog(
+                context: context,
+                builder: (c)
+                {
+                  return ErrorDialog(
+                    message: "Please write title and info for subject.",
+                  );
+                }
+            );
+          }
+      }
+    else
+      {
+        showDialog(
+            context: context,
+            builder: (c){
+              return ErrorDialog(
+                message: "Please pick an image for Subject.",
+              );
+            }
+        );
+      }
+  }
+
+  saveInfo(String downloadUrl)
+  {
+    final ref= FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(sharedPreferences!.getString("uid"))
+        .collection("subject");
+    ref.doc(uniqueIdName).set({
+      "subjectID" : uniqueIdName,
+      "tutorUID" : sharedPreferences!.getString("uid"),
+      "subjectInfo" : shortInfoController.text.toString(),
+      "subjectTitle" : titleController.text.toString(),
+      "publishedDate" : DateTime.now(),
+      "status" : "available",
+      "thumbnailUrl" : downloadUrl,
+    });
+
+    clearSubjectUploadForm();
+    setState(() {
+      uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
+      uploading =false ;
+    });
+  }
+
+  uploadImage(mImageFile) async
+  {
+    storageRef.Reference reference =  storageRef.FirebaseStorage
+        .instance
+        .ref()
+        .child("subjects");
+
+    storageRef.UploadTask uploadTask = reference.child(uniqueIdName + ".jpg").putFile(mImageFile);
+    
+    storageRef.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+
+    String downloadURL = await taskSnapshot.ref.getDownloadURL();
+
+    return downloadURL;
   }
 
   @override
