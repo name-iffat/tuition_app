@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/models/subjects.dart';
+import '../global/global.dart';
 import '../models/tutors.dart';
 
 class InfoDesignWidget extends StatefulWidget {
-  Tutors model;
+  String userType = sharedPreferences!.getString("usertype")!;
+
   BuildContext? context;
 
-  InfoDesignWidget({required this.model, required this.context});
+  late Tutors tutorsModel;
+  late Subjects subjectsModel;
 
+  InfoDesignWidget.tutors({required this.tutorsModel, required this.context});
+  InfoDesignWidget.subjects({required this.subjectsModel, required this.context});
 
 
   @override
   State<InfoDesignWidget> createState() => _InfoDesignWidgetState();
+
+
 }
 
 class _InfoDesignWidgetState extends State<InfoDesignWidget> {
+
+
   @override
   Widget build(BuildContext context) {
+    String userType = sharedPreferences!.getString("usertype")!;
+     dynamic model;
+
+    if (userType == "Parent") {
+      model = widget.tutorsModel;
+    } else if (userType == "Tutor") {
+      model = widget.subjectsModel;
+    }
+
+
     return InkWell(
       splashColor: Colors.amber,
       child: Padding(
@@ -30,13 +50,14 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 thickness: 3,
                 color: Colors.grey[300],
               ),
-              Image.network(widget.model.tutorAvatarUrl!,
+              Image.network(
+                userType == "Parent" ? model.tutorAvatarUrl! : model.thumbnailUrl! ,
                 height: 220.0,
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 10.0,),
               Text(
-                widget.model!.tutorName!,
+                userType == "Parent" ? model!.tutorName! : model!.subjectTitle!,
                 style: const TextStyle(
                   color: Colors.cyan,
                   fontSize: 20,
@@ -44,7 +65,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 ),
               ),
               Text(
-                widget.model!.tutorEmail!,
+                userType == "Parent" ? model!.tutorEmail! : model!.subjectInfo!,
                 style: TextStyle(
                   color: Colors.cyan,
                   fontSize: 12,

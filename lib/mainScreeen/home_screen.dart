@@ -131,8 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     snapshot.data!.docs[index].data()! as Map<String ,dynamic>
                   );
                   //design for display tutors
-                  return InfoDesignWidget(
-                      model: sModel,
+                  return InfoDesignWidget.tutors(
+                      tutorsModel: sModel,
                       context: context
                   );
                 },

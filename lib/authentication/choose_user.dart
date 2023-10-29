@@ -80,7 +80,8 @@ class _ChooseUserState extends State<ChooseUser> {
                       size: 35,
                     ),
                     onPressed: () {
-                      navigateToUserTypeScreen(context, "Parent");                    },
+                      navigateToUserTypeScreen(context, "Parent");
+                      },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
