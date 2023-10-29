@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/itemsScreen.dart';
 import 'package:tuition_app/models/subjects.dart';
 import '../global/global.dart';
 import '../models/tutors.dart';
@@ -37,6 +38,10 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
 
 
     return InkWell(
+      onTap: ()
+      {
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemsScreen(model: model)));
+      },
       splashColor: Colors.amber,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
