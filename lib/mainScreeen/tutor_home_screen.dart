@@ -23,7 +23,10 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("tutors")
-              .doc(sharedPreferences!.getString("uid")).collection("subject").snapshots(),
+              .doc(sharedPreferences!.getString("uid"))
+              .collection("subject")
+              .orderBy("publishedDate", descending: true)
+              .snapshots(),
           builder: (context, snapshot)
           {
             return !snapshot.hasData

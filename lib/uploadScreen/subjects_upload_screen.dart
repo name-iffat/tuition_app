@@ -227,14 +227,14 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.perm_device_information, color: Colors.cyan,),
+            leading: const Icon(Icons.title, color: Colors.cyan,),
             title: Container(
               width: 250,
               child: TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: shortInfoController,
+                controller: titleController,
                 decoration: const InputDecoration(
-                  hintText: "subject info",
+                  hintText: "subject title",
                   hintStyle: TextStyle(color: Colors.grey),
                   border: InputBorder.none,
                 ),
@@ -246,14 +246,14 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
             thickness: 1,
           ),
           ListTile(
-            leading: const Icon(Icons.title, color: Colors.cyan,),
+            leading: const Icon(Icons.perm_device_information, color: Colors.cyan,),
             title: Container(
               width: 250,
               child: TextField(
                 style: const TextStyle(color: Colors.black),
-                controller: titleController,
+                controller: shortInfoController,
                 decoration: const InputDecoration(
-                  hintText: "subjet title",
+                  hintText: "subjet info",
                   hintStyle: TextStyle(color: Colors.grey),
                   border: InputBorder.none,
                 ),

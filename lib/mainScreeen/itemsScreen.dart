@@ -69,7 +69,9 @@ class _ItemsScreenState extends State<ItemsScreen>
                 .doc(sharedPreferences!.getString("uid"))
                 .collection("subject")
                 .doc(widget.model!.subjectID)
-                .collection("items").snapshots(),
+                .collection("items")
+                .orderBy("publishedDate", descending: true)
+                .snapshots(),
             builder: (context, snapshot)
             {
               return !snapshot.hasData
