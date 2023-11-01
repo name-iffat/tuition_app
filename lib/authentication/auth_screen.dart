@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/authentication/login.dart';
 import 'package:tuition_app/authentication/register.dart';
 
@@ -71,8 +70,8 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             child:  TabBarView(
               children: [
-                LoginScreen(userType: widget.userType),
-                RegisterScreen(userType: widget.userType),
+                LoginScreen(userType: userType),
+                RegisterScreen(userType: userType),
               ],
             ),
           ),
