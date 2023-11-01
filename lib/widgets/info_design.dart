@@ -12,9 +12,9 @@ class InfoDesignWidget extends StatefulWidget {
   late Tutors tutorsModel;
   late Subjects subjectsModel;
 
+
   InfoDesignWidget.tutors({required this.tutorsModel, required this.context});
   InfoDesignWidget.subjects({required this.subjectsModel, required this.context});
-
 
   @override
   State<InfoDesignWidget> createState() => _InfoDesignWidgetState();

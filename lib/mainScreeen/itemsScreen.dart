@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tuition_app/uploadScreen/items_upload_screen.dart';
 import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/text_widget.dart';
 
 import '../global/global.dart';
+import '../models/items.dart';
 import '../models/subjects.dart';
+import '../widgets/items_design.dart';
+import '../widgets/progress_bar.dart';
 
 class ItemsScreen extends StatefulWidget {
 
@@ -58,6 +63,36 @@ class _ItemsScreenState extends State<ItemsScreen>
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(pinned: true, delegate: TextWidgetHeader(title: "My ${widget.model.subjectTitle}'s Items")),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("tutors")
+                .doc(sharedPreferences!.getString("uid"))
+                .collection("subject")
+                .doc(widget.model!.subjectID)
+                .collection("items").snapshots(),
+            builder: (context, snapshot)
+            {
+              return !snapshot.hasData
+                  ? SliverToBoxAdapter(
+                child: Center(child: circularProgress(),) ,
+              )
+                  : SliverStaggeredGrid.countBuilder(
+                crossAxisCount: 1,
+                staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                itemBuilder: (context, index)
+                {
+                  Items model = Items.fromJson(
+                      snapshot.data!.docs[index].data()! as Map<String, dynamic>
+                  );
+                  return ItemsDesignWidget(
+                      itemsModel: model,
+                      context: context);
+                },
+                itemCount: snapshot.data!.docs.length,
+              );
+            },
+          ),
+
         ],
       ),
     );
