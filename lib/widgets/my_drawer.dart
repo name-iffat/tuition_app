@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
 
 import '../authentication/choose_user.dart';
+import '../mainScreeen/home_screen.dart';
 
 class MyDrawer extends StatelessWidget {
 
@@ -57,7 +58,7 @@ class MyDrawer extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
                   },
                 ),
                 ListTile(

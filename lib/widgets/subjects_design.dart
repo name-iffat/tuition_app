@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/items_screen_parent.dart';
 import 'package:tuition_app/models/subjects.dart';
 import '../global/global.dart';
 
@@ -24,6 +25,10 @@ class _SubjectsDesignWidgetState extends State<SubjectsDesignWidget> {
   Widget build(BuildContext context) {
 
     return InkWell(
+      onTap: ()
+      {
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemsScreenParent(subjectsModel: widget.subjectsModel)));
+      },
       splashColor: Colors.amber,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
