@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/item_detail_screen.dart';
 import '../global/global.dart';
 import '../models/items.dart';
 
@@ -28,7 +29,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
     return InkWell(
       onTap: ()
       {
-        //Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemsScreen(model: model)));
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemDetailScreen(model: widget.itemsModel,)));
       },
       splashColor: Colors.amber,
       child: Padding(
