@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:tuition_app/widgets/app_bar.dart';
 
+import '../assistantMethods/assistant_methods.dart';
 import '../models/items.dart';
 
 class ItemDetailScreen extends StatefulWidget
@@ -15,6 +16,8 @@ class ItemDetailScreen extends StatefulWidget
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   TextEditingController counterTextEditingController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context)
   {
@@ -63,7 +66,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             child: InkWell(
               onTap: ()
               {
+                int itemCounter = int.parse(counterTextEditingController.text);
+                //check if item exist already in cart
+
                 // add to cart
+                addItemToChart(widget.model!.itemID, context, itemCounter);
               },
               child: Container(
                 decoration: const BoxDecoration(

@@ -93,6 +93,11 @@ class _LoginScreenState extends State<LoginScreen> {
           await sharedPreferences!.setString(
               "usertype", snapshot.data()!["userType"]);
 
+          List<String> userCartList = snapshot.data()!["userCart"].cast<String>();
+          await sharedPreferences!.setStringList(
+              "userCart", userCartList);
+
+
           Navigator.pop(context);//remove loading dialog
           Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
 

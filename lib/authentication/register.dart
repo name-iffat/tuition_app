@@ -199,7 +199,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "earnings" : 0.0,
       "lat" : position!.latitude,
       "lng" : position!.longitude,
-      "userType" : "Parent"
+      "userType" : "Parent",
+      "userCart": ["garbageValue"]
     });
     }
     else if(widget.userType == "Tutor")
@@ -226,6 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await sharedPreferences!.setString("name", nameController.text.trim());
     await sharedPreferences!.setString("photoUrl", parentImageUrl);
     await sharedPreferences!.setString("usertype", widget.userType);
+    await sharedPreferences!.setStringList("userCart", ["garbageValue"]);
   }
 
   @override
