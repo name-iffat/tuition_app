@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:tuition_app/widgets/app_bar.dart';
 
@@ -67,7 +68,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               onTap: ()
               {
                 int itemCounter = int.parse(counterTextEditingController.text);
+
+                List<String> separateItemIDsList = separateItemIDs();
+
                 //check if item exist already in cart
+                separateItemIDsList.contains(widget.model!.itemID)
+                ? Fluttertoast.showToast(msg: "Item is already in cart.")
+                :
 
                 // add to cart
                 addItemToChart(widget.model!.itemID, context, itemCounter);
