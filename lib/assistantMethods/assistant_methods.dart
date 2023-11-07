@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:tuition_app/assistantMethods/cart_item_counter.dart';
 import 'package:tuition_app/global/global.dart';
 
 separateItemIDs()
@@ -41,5 +43,7 @@ addItemToChart(String? subjectItemId, BuildContext context, int itemCounter)
     sharedPreferences!.setStringList("userCart", tempList);
 
       //update the badge cart number
+    Provider.of<CartItemCounter>(context, listen: false).displayCartListItemsNumber();
+
   });
 }

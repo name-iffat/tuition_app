@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tuition_app/assistantMethods/cart_item_counter.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget
 {
@@ -54,10 +56,10 @@ class _MyAppBarState extends State<MyAppBar> {
                   //Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
                 },
               ),
-              const Positioned(
+               Positioned(
                 child: Stack(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.brightness_1,
                       size: 20,
                       color: Colors.green,
@@ -66,7 +68,15 @@ class _MyAppBarState extends State<MyAppBar> {
                       top: 3,
                       right: 5,
                       child: Center(
-                        child: Text("0", style: TextStyle(color: Colors.white, fontSize: 12),),
+                        child: Consumer<CartItemCounter>(
+                          builder: (context, counter, c)
+                          {
+                            return Text(
+                              counter.count.toString(),
+                                style: TextStyle(color: Colors.white, fontSize: 12)
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],

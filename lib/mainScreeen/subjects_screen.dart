@@ -44,32 +44,32 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              icon: const Icon(Icons.shopping_bag, color: Colors.white,),
-              onPressed: ()
-              {
-                //send user to cart screen
-                //Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
-              },
-            ),
-            const Positioned(
-              child: Stack(
-                children: [
-                  Icon(
-                    Icons.brightness_1,
-                    size: 20,
-                    color: Colors.green,
-                  ),
-                  Positioned(
-                    top: 3,
-                    right: 4,
-                    child: Center(
-                      child: Text("0", style: TextStyle(color: Colors.white, fontSize: 12),),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.shopping_bag, color: Colors.white,),
+            //   onPressed: ()
+            //   {
+            //     //send user to cart screen
+            //     //Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
+            //   },
+            // ),
+            // const Positioned(
+            //   child: Stack(
+            //     children: [
+            //       Icon(
+            //         Icons.brightness_1,
+            //         size: 20,
+            //         color: Colors.green,
+            //       ),
+            //       Positioned(
+            //         top: 3,
+            //         right: 4,
+            //         child: Center(
+            //           child: Text("0", style: TextStyle(color: Colors.white, fontSize: 12),),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
         drawer: MyDrawer(),
