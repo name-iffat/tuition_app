@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/cart_item_counter.dart';
+import 'package:tuition_app/mainScreeen/cart_screen.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget
 {
   final PreferredSizeWidget? bottom;
-  MyAppBar({this.bottom});
+  final String? tutorUID;
+  MyAppBar({this.bottom, this.tutorUID});
 
   @override
   State<MyAppBar> createState() => _MyAppBarState();
@@ -53,7 +55,7 @@ class _MyAppBarState extends State<MyAppBar> {
                 onPressed: ()
                 {
                   //send user to cart screen
-                  //Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
+                  Navigator.push(context,MaterialPageRoute(builder: (c)=> CartScreen(tutorUID: widget.tutorUID)));
                 },
               ),
                Positioned(

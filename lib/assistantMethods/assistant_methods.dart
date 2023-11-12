@@ -14,6 +14,7 @@ separateItemIDs()
 
   for(i; i<defaultItemList.length;i++)
     {
+      //itemid:itemcount
       //5565757:7
       String item = defaultItemList[i].toString();
       var pos = item.lastIndexOf(":");
@@ -47,3 +48,31 @@ addItemToChart(String? subjectItemId, BuildContext context, int itemCounter)
 
   });
 }
+
+separateItemQuantities()
+{
+  List<int> separateItemQuantityList =[];
+  List<String> defaultItemList=[];
+  int i=1;
+
+  defaultItemList = sharedPreferences!.getStringList("userCart")!;
+
+  for(i; i<defaultItemList.length;i++)
+  {
+    //5565757:7
+    String item = defaultItemList[i].toString();
+
+    //7
+    List<String> listItemCharacters = item.split(":").toList();
+    var quanNumber = int.parse(listItemCharacters[1].toString());
+
+    print("This is Quantity Number=" + quanNumber.toString());
+
+    separateItemQuantityList.add(quanNumber);
+  }
+  print("/nThis is Items Quantity List now = ");
+  print(separateItemQuantityList);
+
+  return separateItemQuantityList;
+}
+
