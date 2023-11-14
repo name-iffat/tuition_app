@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/widgets/app_bar.dart';
+import 'package:tuition_app/widgets/cart_item_design.dart';
+import 'package:tuition_app/widgets/progress_bar.dart';
+
+import '../models/items.dart';
+import '../widgets/text_widget.dart';
 
 class CartScreen extends StatefulWidget {
 
@@ -15,11 +21,13 @@ class CartScreen extends StatefulWidget {
 
 
 class _CartScreenState extends State<CartScreen> {
+
+  List<int>? separateItemQuantityList;
   @override
   void initState() {
     super.initState();
 
-    separateItemQuantities();
+    separateItemQuantityList = separateItemQuantities();
   }
   @override
   Widget build(BuildContext context) {
@@ -52,6 +60,49 @@ class _CartScreenState extends State<CartScreen> {
 
               },
             ),
+          ),
+        ],
+      ),
+      body: CustomScrollView(
+        slivers: [
+
+          //overall total price
+          SliverPersistentHeader(
+              pinned: true,
+              delegate: TextWidgetHeader(title: "Total Amount = 120")
+          ),
+
+          //display cart item with quantity
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("items")
+                .where("itemID", whereIn: separateItemIDs())
+                .orderBy("publishedDate", descending: true)
+                .snapshots(),
+            builder: (context, snapshot)
+            {
+              return !snapshot.hasData
+                  ? SliverToBoxAdapter(child: Center(child: circularProgress(),),)
+                  : snapshot.data!.docs.length == 0
+                  ? //startBuiildingCart()
+                    Container()
+                  : SliverList(
+                delegate: SliverChildBuilderDelegate((context, index)
+                {
+                  Items model = Items.fromJson(
+                    snapshot.data!.docs[index].data()! as Map<String, dynamic>,
+                  );
+
+                  return CartItemDesign(
+                    model: model,
+                    context: context,
+                    quanNumber: separateItemQuantityList![index] ,
+                  );
+                },
+                childCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
+                ),
+              );
+            },
           ),
         ],
       ),
