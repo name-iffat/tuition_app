@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
-import 'package:tuition_app/widgets/app_bar.dart';
 import 'package:tuition_app/widgets/cart_item_design.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
+import '../assistantMethods/cart_item_counter.dart';
 import '../models/items.dart';
+import '../splashScreen/splash_screen.dart';
 import '../widgets/text_widget.dart';
 
 class CartScreen extends StatefulWidget {
@@ -32,7 +35,75 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(tutorUID: widget.tutorUID,),
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.cyan,
+                  Colors.amber,
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0,1.0],
+                tileMode: TileMode.clamp,
+              )
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.clear_all),
+          onPressed: ()
+          {
+            clearCartNow(context);
+          },
+        ),
+        title: const Text(
+          "TutorGO",
+          style: TextStyle(fontSize: 30, fontFamily: "Bebas"),
+        ),
+        centerTitle: true,
+        actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_bag, color: Colors.white,),
+                onPressed: ()
+                {
+                  //send user to cart screen
+                  print("shopcart clicked");
+                },
+              ),
+              Positioned(
+                child: Stack(
+                  children: [
+                    const Icon(
+                      Icons.brightness_1,
+                      size: 20,
+                      color: Colors.green,
+                    ),
+                    Positioned(
+                      top: 3,
+                      right: 5,
+                      child: Center(
+                        child: Consumer<CartItemCounter>(
+                          builder: (context, counter, c)
+                          {
+                            return Text(
+                                counter.count.toString(),
+                                style: TextStyle(color: Colors.white, fontSize: 12)
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+        ],
+      ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -45,6 +116,11 @@ class _CartScreenState extends State<CartScreen> {
               icon: const Icon(Icons.clear_all),
               onPressed: ()
               {
+                clearCartNow(context);
+
+                Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+
+                Fluttertoast.showToast(msg: "Cart has been cleared.");
 
               },
             ),

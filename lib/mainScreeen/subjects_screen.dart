@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/models/tutors.dart';
 import 'package:tuition_app/widgets/subjects_design.dart';
 
 import '../models/subjects.dart';
-import '../widgets/my_drawer.dart';
+import '../splashScreen/splash_screen.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/text_widget.dart';
 
@@ -37,6 +38,15 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                   tileMode: TileMode.clamp,
                 )
             ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: ()
+            {
+              clearCartNow(context);
+
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+            },
           ),
           title: const Text(
             "TutorGO",
@@ -72,7 +82,6 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
             // ),
           ],
         ),
-        drawer: MyDrawer(),
         body:CustomScrollView(
       slivers: [
         SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: widget.model!.tutorName.toString() + " Subjects")),

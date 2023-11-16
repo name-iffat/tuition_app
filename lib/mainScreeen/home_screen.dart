@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/uploadScreen/subjects_upload_screen.dart';
@@ -30,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
     "slider/5.jpg",
     "slider/6.jpg",
   };
+  @override
+  void initState() {
+    super.initState();
+
+    clearCartNow(context);
+  }
 
   @override
   Widget build(BuildContext context) {
