@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/assistantMethods/total_amount.dart';
+import 'package:tuition_app/mainScreeen/address_screen.dart';
 import 'package:tuition_app/widgets/cart_item_design.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
@@ -139,7 +140,15 @@ class _CartScreenState extends State<CartScreen> {
               icon: const Icon(Icons.navigate_next),
               onPressed: ()
               {
-
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (c)=> AddressScreen(
+                          totalAmount: totalAmount.toDouble(),
+                          tutorUID: widget.tutorUID,
+                        )
+                    ),
+                );
               },
             ),
           ),
