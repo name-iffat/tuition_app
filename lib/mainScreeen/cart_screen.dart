@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
+import 'package:tuition_app/assistantMethods/total_amount.dart';
 import 'package:tuition_app/widgets/cart_item_design.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
@@ -26,9 +27,14 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
 
   List<int>? separateItemQuantityList;
+  num totalAmount = 0;
+  
   @override
   void initState() {
     super.initState();
+    
+    totalAmount =0;
+    Provider.of<TotalAmount>(context, listen: false).displayTotalAmount(0);
 
     separateItemQuantityList = separateItemQuantities();
   }
@@ -145,7 +151,28 @@ class _CartScreenState extends State<CartScreen> {
           //overall total price
           SliverPersistentHeader(
               pinned: true,
-              delegate: TextWidgetHeader(title: "Total Amount = 120")
+              delegate: TextWidgetHeader(title: "My Cart List")
+          ),
+
+          SliverToBoxAdapter(
+            child: Consumer2<TotalAmount, CartItemCounter>(builder: (context, amountProvider, cartProvider, c)
+            {
+              return Padding(
+                  padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: cartProvider.count == 0
+                      ? Container()
+                      : Text(
+                          "Total Price: ${amountProvider.tAmount.toString()}",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                  ),
+                ),
+              );
+            }),
           ),
 
           //display cart item with quantity
@@ -168,6 +195,24 @@ class _CartScreenState extends State<CartScreen> {
                   Items model = Items.fromJson(
                     snapshot.data!.docs[index].data()! as Map<String, dynamic>,
                   );
+
+                  if(index == 0)
+                  {
+                    totalAmount = 0;
+                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                  }
+                  else
+                  {
+                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                  }
+
+                  if(snapshot.data!.docs.length -1 == index)
+                  {
+                    WidgetsBinding.instance!.addPostFrameCallback((timeStamp)
+                    {
+                      Provider.of<TotalAmount>(context,listen: false).displayTotalAmount(totalAmount.toDouble());
+                    });
+                  }
 
                   return CartItemDesign(
                     model: model,
