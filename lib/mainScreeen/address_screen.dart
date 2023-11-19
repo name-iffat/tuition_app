@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/save_address_screen.dart';
+import 'package:tuition_app/widgets/simple_app_bar.dart';
 
 class AddressScreen extends StatefulWidget {
 
@@ -15,30 +17,7 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.cyan,
-                  Colors.amber,
-                ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
-          ),
-        ),
-        title: const Text(
-          "TutorGO",
-          style: TextStyle(fontSize: 30, fontFamily: "Bebas"),
-        ),
-        centerTitle: true,
-      ),
+      appBar: SimpleAppBar(),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text("Add New Address"),
           backgroundColor: Colors.cyan,
@@ -46,6 +25,7 @@ class _AddressScreenState extends State<AddressScreen> {
           onPressed: ()
           {
             //save address to parent location
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> SaveAddressScreen()));
           }
           ),
       body: Column(
