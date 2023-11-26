@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/address_changer.dart';
+import 'package:tuition_app/mainScreeen/placed_order_screen.dart';
 import 'package:tuition_app/maps/maps.dart';
 
 import '../models/address.dart';
@@ -144,7 +145,15 @@ class _AddressDesignState extends State<AddressDesign> {
                     ),
               onPressed: ()
               {
-
+                Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (c)=> PlacedOrderScreen(
+                      addressID: widget.addressID,
+                      totalAmount: widget.totalAmount,
+                      tutorUID: widget.tutorUID,
+                    ),
+                )
+                );
               },
             )
                 : Container(),
