@@ -54,66 +54,68 @@ class _AddressDesignState extends State<AddressDesign> {
                     print(val);
                   },
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width + 0.8,
-                      child: Table(
-                        children: [
-                          TableRow(
-                            children: [
-                              const Text("Name: ",
-                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.name.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text("Phone Number: ",
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        width: MediaQuery.of(context).size.width + 0.8,
+                        child: Table(
+                          children: [
+                            TableRow(
+                              children: [
+                                const Text("Name: ",
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.phoneNumber.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text("Flat Number: ",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.flatNumber.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text("City: ",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.city.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text("State: ",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.state.toString()),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              const Text("Full Address: ",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                              ),
-                              Text(widget.model!.fullAddress.toString()),
-                            ],
-                          ),
-                        ],
+                                ),
+                                Text(widget.model!.name.toString()),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text("Phone Number: ",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.model!.phoneNumber.toString()),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text("Flat Number: ",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.model!.flatNumber.toString()),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text("City: ",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.model!.city.toString()),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text("State: ",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.model!.state.toString()),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const Text("Full Address: ",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.model!.fullAddress.toString()),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
