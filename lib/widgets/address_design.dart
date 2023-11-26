@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/address_changer.dart';
+import 'package:tuition_app/maps/maps.dart';
 
 import '../models/address.dart';
 
@@ -127,6 +128,9 @@ class _AddressDesignState extends State<AddressDesign> {
               ),
               onPressed: ()
               {
+                MapsUtils.openMapWithPosition(widget.model!.lat!, widget.model!.lng!);
+
+                //MapsUtils.openMapWithAddress(widget.model!.fullAddress!);
 
               },
             ),
