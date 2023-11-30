@@ -23,13 +23,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final items ={
-    "slider/0.jpg",
-    "slider/1.jpg",
-    "slider/2.jpg",
-    "slider/3.jpg",
-    "slider/4.jpg",
-    "slider/5.jpg",
-    "slider/6.jpg",
+    "slider/a.jpeg",
+    "slider/b.png",
+    "slider/c.jpg",
+    "slider/d.jpeg",
+    "slider/e.png",
+    "slider/f.jpg",
+    "slider/g.jpg",
   };
   @override
   void initState() {

@@ -47,7 +47,7 @@ class SaveAddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(),
+      appBar: SimpleAppBar(title: "TutorGO",),
       body: SingleChildScrollView(
         child: Column(
           children: [

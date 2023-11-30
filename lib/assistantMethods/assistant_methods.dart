@@ -5,6 +5,32 @@ import 'package:provider/provider.dart';
 import 'package:tuition_app/assistantMethods/cart_item_counter.dart';
 import 'package:tuition_app/global/global.dart';
 
+separateOrderItemIDs(orderIDs)
+{
+  List<String> separateItemIDsList =[], defaultItemList=[];
+  int i=0;
+
+  defaultItemList = List<String>.from(orderIDs);
+
+  for(i; i<defaultItemList.length;i++)
+  {
+    //itemid:itemcount
+    //5565757:7
+    String item = defaultItemList[i].toString();
+    var pos = item.lastIndexOf(":");
+    //5565757
+    String getItemId = (pos != -1) ? item.substring(0, pos) : item;
+    print("This is itemID now = $getItemId");
+
+    separateItemIDsList.add(getItemId);
+  }
+  print("/nThis is Items List now = ");
+  print(separateItemIDsList);
+
+  return separateItemIDsList;
+}
+
+
 separateItemIDs()
 {
   List<String> separateItemIDsList =[], defaultItemList=[];
@@ -48,6 +74,35 @@ addItemToChart(String? subjectItemId, BuildContext context, int itemCounter)
 
   });
 }
+
+
+separateOrderItemQuantities(orderIds)
+{
+  List<String> separateItemQuantityList =[];
+  List<String> defaultItemList=[];
+  int i=1;
+
+  defaultItemList = List<String>.from(orderIds) ;
+
+  for(i; i<defaultItemList.length;i++)
+  {
+    //5565757:7
+    String item = defaultItemList[i].toString();
+
+    //7
+    List<String> listItemCharacters = item.split(":").toList();
+    var quanNumber = int.parse(listItemCharacters[1].toString());
+
+    print("This is Quantity Number=" + quanNumber.toString());
+
+    separateItemQuantityList.add(quanNumber.toString());
+  }
+  print("/nThis is Items Quantity List now = ");
+  print(separateItemQuantityList);
+
+  return separateItemQuantityList;
+}
+
 
 separateItemQuantities()
 {
