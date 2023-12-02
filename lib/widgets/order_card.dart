@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/order_details_screen.dart';
 import '../models/items.dart';
 
 class OrderCard extends StatelessWidget
@@ -23,7 +24,7 @@ class OrderCard extends StatelessWidget
     return InkWell(
       onTap: ()
       {
-        //todo
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> OrderDetailsScreen(orderID: orderID)));
       },
       child: Container(
         decoration: const BoxDecoration(
