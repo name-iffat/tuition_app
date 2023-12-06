@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/book_in_progress_screen.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/mainScreeen/tutor_orders.dart';
 
@@ -85,7 +86,7 @@ class MyDrawerTutor extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.description,color: Colors.black,),
                   title: const Text(
-                    "New Orders",
+                    "New Book",
                     style: TextStyle(color: Colors.black)
                   ),
                   onTap: (){
@@ -93,13 +94,23 @@ class MyDrawerTutor extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.directions_car,color: Colors.black,),
+                  leading: const Icon(Icons.history,color: Colors.black,),
                   title: const Text(
-                    "History - Orders",
+                    "History - Book",
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: (){
 
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.directions_car,color: Colors.black,),
+                  title: const Text(
+                    "Book in Progress",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> BookInProgressScreen()));
                   },
                 ),
                 ListTile(
