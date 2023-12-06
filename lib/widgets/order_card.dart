@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/mainScreeen/order_details_screen.dart';
+import '../global/global.dart';
+import '../mainScreeen/tutor_order_details_screen.dart';
 import '../models/items.dart';
 
 class OrderCard extends StatelessWidget
@@ -21,10 +23,12 @@ class OrderCard extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    String userType = sharedPreferences!.getString("usertype")! ;
+
     return InkWell(
       onTap: ()
       {
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> OrderDetailsScreen(orderID: orderID)));
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> userType == "Parent" ? OrderDetailsScreen(orderID: orderID) : TutorOrderDetailsScreen(orderID: orderID)));
       },
       child: Container(
         decoration: const BoxDecoration(
