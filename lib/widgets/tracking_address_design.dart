@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/get_current_location.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tracking_screen.dart';
 
 import '../models/address.dart';
 
 class TrackingAddressDesign extends StatelessWidget {
   final Address? model;
   final String? orderStatus;
+  final String? orderID;
+  final String? tutorID;
+  final String? orderByParent;
 
-  TrackingAddressDesign({this.model, this.orderStatus});
+  TrackingAddressDesign({this.model, this.orderStatus, this.orderID, this.tutorID, this.orderByParent});
 
   confirmedBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId)
   {
@@ -25,7 +29,14 @@ class TrackingAddressDesign extends StatelessWidget {
     });
 
     //send tutor to tracking screen
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TrackingScreen(
+      purchaserId: purchaserId,
+      purchaserAddress: model!.fullAddress,
+      purchaserLat: model!.lat,
+      purchaserLng: model!.lng,
+      tutorID: getTutorID,
+      getOrderID: getOrderID,
+    )));
 
   }
 
@@ -120,9 +131,10 @@ class TrackingAddressDesign extends StatelessWidget {
             child: InkWell(
               onTap: ()
               {
-                UserLocation? uLocation;
+                UserLocation? uLocation = UserLocation();
                 uLocation!.getCurrentLocation();
-
+                
+                confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
               },
               child: Container(
                 decoration: const BoxDecoration(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tuition_app/assistantMethods/get_current_location.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/models/subjects.dart';
 import 'package:tuition_app/widgets/info_design.dart';
@@ -15,6 +16,15 @@ class TutorHomeScreen extends StatefulWidget {
 }
 
 class _TutorHomeScreenState extends State<TutorHomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    UserLocation uLocation = UserLocation();
+    uLocation.getCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
