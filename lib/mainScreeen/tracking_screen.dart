@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/assistantMethods/get_current_location.dart';
+import 'package:tuition_app/mainScreeen/book_incoming.dart';
 import 'package:tuition_app/maps/map_utils.dart';
 
 import '../global/global.dart';
@@ -51,6 +53,29 @@ class _TrackingScreenState extends State<TrackingScreen>
     getParentData();
   }
 
+  confirmBookTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
+  {
+    FirebaseFirestore.instance
+        .collection("orders")
+        .doc(getOrderId)
+        .update({
+      "status": "incoming",
+      "address": completeAddress,
+      "lat": position!.latitude,
+      "lng": position!.longitude,
+    });
+    
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> BookIncomingScreeen(
+      purchaserId: purchaserId,
+      purchaserAddress: purchaserAddress,
+      purchaserLat: purchaserLat,
+      purchaserLng: purchaserLng,
+      tutorId: tutorId,
+      getOrderId: getOrderId,
+
+    )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +108,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                   children: [
                     const SizedBox(height: 12,),
                     const Text(
-                      "Show My Location",
+                      "Show Tutee Location",
                       style: TextStyle(
                         fontFamily: "Bebas",
                         fontSize: 18,
@@ -104,8 +129,16 @@ class _TrackingScreenState extends State<TrackingScreen>
               child: InkWell(
                 onTap: ()
                 {
+                  UserLocation uLocation = UserLocation();
+                  uLocation.getCurrentLocation();
                   //confirmed - tutor get book
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                  confirmBookTutor(
+                      widget.getOrderID,
+                      widget.tutorID,
+                      widget.purchaserId,
+                      widget.purchaserAddress,
+                      widget.purchaserLat,
+                      widget.purchaserLng);
                 },
                 child: Container(
                   decoration: const BoxDecoration(
