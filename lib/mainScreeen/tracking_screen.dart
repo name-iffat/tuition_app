@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/maps/map_utils.dart';
+
+import '../global/global.dart';
 
 class TrackingScreen extends StatefulWidget
 {
@@ -26,6 +30,27 @@ class TrackingScreen extends StatefulWidget
 class _TrackingScreenState extends State<TrackingScreen>
 {
 
+  double? parentLat, parentLng;
+
+  getParentData() async
+  {
+    FirebaseFirestore.instance
+        .collection("parents")
+        .doc(widget.purchaserId)
+        .get()
+        .then((DocumentSnapshot)
+    {
+          parentLat = DocumentSnapshot.data()!["lat"];
+          parentLng = DocumentSnapshot.data()!["lng"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getParentData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +67,7 @@ class _TrackingScreenState extends State<TrackingScreen>
             onTap: ()
             {
               //show tutor current location towards
+              MapUtility.launchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
