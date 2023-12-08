@@ -9,3 +9,7 @@ FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 Position? position;
 List<Placemark>? placeMark;
 String completeAddress="";
+
+String perBookTransportAmount="";
+String previousEarnings =''; //tutoring old earnings
+String previousTransportEarnings =""; //tutor transporting old earnings

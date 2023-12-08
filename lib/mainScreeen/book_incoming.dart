@@ -31,8 +31,11 @@ class BookIncomingScreeen extends StatefulWidget
 
 class _BookIncomingScreeenState extends State<BookIncomingScreeen>
 {
+  String orderTotalAmount = "";
   confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
   {
+    String transportNewTotalEarningAmount = ((double.parse(previousTransportEarnings)) + (double.parse(perBookTransportAmount))).toString();
+
     FirebaseFirestore.instance
         .collection("orders")
         .doc(getOrderId)
@@ -41,7 +44,7 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
       "address": completeAddress,
       "lat": position!.latitude,
       "lng": position!.longitude,
-      "earnings":"", //pay per tutor
+      "earnings":perBookTransportAmount, //pay per tutor
     }).then((value)
     {
       FirebaseFirestore.instance
@@ -49,7 +52,7 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
           .doc(sharedPreferences!.getString("uid"))
           .update(
           {
-            "earnings":"", //total earnings of tutor transporting
+            "earnings": transportNewTotalEarningAmount, //total earnings of tutor transporting
           });
     }).then((value)
     {
@@ -58,7 +61,7 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
           .doc(widget.tutorId)
           .update(
           {
-            "earnings":"", //total earnings tutoring
+            "earnings":(double.parse(orderTotalAmount) + (double.parse(previousEarnings))).toString(), //total earnings tutoring
           });
     }).then((value)
     {
@@ -75,7 +78,37 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
 
     Navigator.push(context, MaterialPageRoute(builder: (c)=> HomeScreen()));
   }
+  
+  getBookTotalAmount()
+  {
+    FirebaseFirestore.instance
+        .collection("orders")
+        .doc(widget.getOrderId)
+        .get().then((snap)
+    {
+      orderTotalAmount = snap.data()!["totalAmount"].toString();
+      widget.tutorId = snap.data()!["tutorUID"].toString();
+    });
+  }
 
+  getTutorData()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(widget.tutorId)
+        .get().then((snap)
+    {
+      previousEarnings = snap.data()!["earnings"].toString();
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+
+    UserLocation uLocation = UserLocation();
+    uLocation.getCurrentLocation();
+    getBookTotalAmount();
+  }
 
   @override
   Widget build(BuildContext context) {

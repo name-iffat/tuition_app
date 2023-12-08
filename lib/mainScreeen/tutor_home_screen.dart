@@ -23,6 +23,29 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
 
     UserLocation uLocation = UserLocation();
     uLocation.getCurrentLocation();
+    getPerBookTransportAmount();
+  }
+  
+  getTransportPreviousEarnings()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(sharedPreferences!.getString("uid"))
+        .get().then((snap)
+    {
+      previousTransportEarnings = snap.data()!["earnings"].toString();
+    });
+  }
+
+  getPerBookTransportAmount()
+  {
+    FirebaseFirestore.instance
+        .collection("perTransport")
+        .doc("amount5km")
+        .get().then((snap)
+    {
+      perBookTransportAmount= snap.data()!["amount"].toString();
+    });
   }
 
   @override
