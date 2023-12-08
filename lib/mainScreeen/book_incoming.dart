@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tuition_app/mainScreeen/home_screen.dart';
+
+import '../assistantMethods/get_current_location.dart';
+import '../global/global.dart';
+import '../maps/map_utils.dart';
 
 class BookIncomingScreeen extends StatefulWidget
 {
@@ -23,9 +29,146 @@ class BookIncomingScreeen extends StatefulWidget
   State<BookIncomingScreeen> createState() => _BookIncomingScreeenState();
 }
 
-class _BookIncomingScreeenState extends State<BookIncomingScreeen> {
+class _BookIncomingScreeenState extends State<BookIncomingScreeen>
+{
+  confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
+  {
+    FirebaseFirestore.instance
+        .collection("orders")
+        .doc(getOrderId)
+        .update({
+      "status": "ended",
+      "address": completeAddress,
+      "lat": position!.latitude,
+      "lng": position!.longitude,
+      "earnings":"", //pay per tutor
+    }).then((value)
+    {
+      FirebaseFirestore.instance
+          .collection("tutors")
+          .doc(sharedPreferences!.getString("uid"))
+          .update(
+          {
+            "earnings":"", //total earnings of tutor transporting
+          });
+    }).then((value)
+    {
+      FirebaseFirestore.instance
+          .collection("tutors")
+          .doc(widget.tutorId)
+          .update(
+          {
+            "earnings":"", //total earnings tutoring
+          });
+    }).then((value)
+    {
+      FirebaseFirestore.instance
+          .collection("parents")
+          .doc(purchaserId)
+          .collection("orders")
+          .doc(getOrderId).update(
+          {
+            "status":"ended",
+            "tutorUID": sharedPreferences!.getString("uid"),
+          });
+    });
+
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> HomeScreen()));
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+              "images/success.png"
+          ),
+          const SizedBox(height: 5,),
+
+          GestureDetector(
+            onTap: ()
+            {
+              //show tutor current location towards
+              MapUtility.launchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                Image.asset(
+                  "images/LOGO.png",
+                  width: 50,
+                ),
+                const SizedBox(width: 7,),
+
+                Column(
+                  children: [
+                    const SizedBox(height: 12,),
+                    const Text(
+                      "Show Tutee Location",
+                      style: TextStyle(
+                        fontFamily: "Bebas",
+                        fontSize: 18,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+          const SizedBox(height: 13,),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: InkWell(
+                onTap: ()
+                {
+                  //tutor location
+                  UserLocation uLocation = UserLocation();
+                  uLocation.getCurrentLocation();
+                  //confirmed - tutor get book
+                  confirmStartTutor(
+                      widget.getOrderId,
+                      widget.tutorId,
+                      widget.purchaserId,
+                      widget.purchaserAddress,
+                      widget.purchaserLat,
+                      widget.purchaserLng);
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.cyan,
+                          Colors.blue,
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 0.0),
+                        stops: [0.0,1.0],
+                        tileMode: TileMode.clamp,
+                      )
+                  ),
+                  width: MediaQuery.of(context).size.width - 90,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "Start Tutoring",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0, fontFamily: "Poppins"),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
