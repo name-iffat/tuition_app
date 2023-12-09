@@ -24,6 +24,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
     UserLocation uLocation = UserLocation();
     uLocation.getCurrentLocation();
     getPerBookTransportAmount();
+    getTransportPreviousEarnings();
   }
   
   getTransportPreviousEarnings()

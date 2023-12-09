@@ -6,7 +6,7 @@ import '../assistantMethods/get_current_location.dart';
 import '../global/global.dart';
 import '../maps/map_utils.dart';
 
-class BookIncomingScreeen extends StatefulWidget
+class BookIncomingScreen extends StatefulWidget
 {
 
   String? purchaserId;
@@ -16,7 +16,7 @@ class BookIncomingScreeen extends StatefulWidget
   String? tutorId;
   String? getOrderId;
 
-  BookIncomingScreeen({
+  BookIncomingScreen({
     this.purchaserId,
     this.purchaserAddress,
     this.purchaserLat,
@@ -26,15 +26,15 @@ class BookIncomingScreeen extends StatefulWidget
 });
 
   @override
-  State<BookIncomingScreeen> createState() => _BookIncomingScreeenState();
+  State<BookIncomingScreen> createState() => _BookIncomingScreenState();
 }
 
-class _BookIncomingScreeenState extends State<BookIncomingScreeen>
+class _BookIncomingScreenState extends State<BookIncomingScreen>
 {
   String orderTotalAmount = "";
   confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
   {
-    String transportNewTotalEarningAmount = ((double.parse(previousTransportEarnings)) + (double.parse(perBookTransportAmount))).toString();
+    String transportNewTotalEarningAmount = (previousTransportEarnings + perBookTransportAmount).toString();
 
     FirebaseFirestore.instance
         .collection("orders")
@@ -61,7 +61,7 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
           .doc(widget.tutorId)
           .update(
           {
-            "earnings":(double.parse(orderTotalAmount) + (double.parse(previousEarnings))).toString(), //total earnings tutoring
+            "earnings":(orderTotalAmount + previousEarnings).toString(), //total earnings tutoring
           });
     }).then((value)
     {
@@ -118,7 +118,7 @@ class _BookIncomingScreeenState extends State<BookIncomingScreeen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-              "images/success.png"
+              "images/tutorlogin.png"
           ),
           const SizedBox(height: 5,),
 

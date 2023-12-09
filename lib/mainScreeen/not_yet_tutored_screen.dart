@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
+import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/widgets/order_card.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 import 'package:tuition_app/widgets/simple_app_bar.dart';
 
-import '../global/global.dart';
-
-class BookInProgressScreen extends StatefulWidget {
-  const BookInProgressScreen({super.key});
+class NotYetTutoredScreen extends StatefulWidget {
+  const NotYetTutoredScreen({super.key});
 
   @override
-  State<BookInProgressScreen> createState() => _BookInProgressScreenState();
+  State<NotYetTutoredScreen> createState() => _NotYetTutoredScreenState();
 }
 
-class _BookInProgressScreenState extends State<BookInProgressScreen> {
+class _NotYetTutoredScreenState extends State<NotYetTutoredScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: SimpleAppBar(title: "Book In Progress",),
+        appBar: SimpleAppBar(title: "To Be Tutor",),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
+              .where("status", isEqualTo: "incoming")
               .where("tutorUID", isEqualTo: sharedPreferences!.getString("uid"))
-              .where("status", isEqualTo: "booking")
               .snapshots(),
           builder: (c, snapshot)
           {

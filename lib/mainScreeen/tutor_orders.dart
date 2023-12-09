@@ -5,6 +5,8 @@ import 'package:tuition_app/widgets/order_card.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 import 'package:tuition_app/widgets/simple_app_bar.dart';
 
+import '../global/global.dart';
+
 class TutorOrdersScreen extends StatefulWidget {
   const TutorOrdersScreen({super.key});
 
@@ -21,6 +23,7 @@ class _TutorOrdersScreenState extends State<TutorOrdersScreen> {
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
+              .where("tutorUID", isEqualTo: sharedPreferences!.getString("uid"))
               .where("status", isEqualTo: "normal")
               .orderBy("orderTime", descending: true)
               .snapshots(),

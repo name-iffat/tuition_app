@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/book_in_progress_screen.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/not_yet_tutored_screen.dart';
 import 'package:tuition_app/mainScreeen/tutor_orders.dart';
 
 import '../authentication/choose_user.dart';
@@ -111,6 +112,16 @@ class MyDrawerTutor extends StatelessWidget {
                   ),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (c)=> BookInProgressScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.approval,color: Colors.black,),
+                  title: const Text(
+                    "Not Yet Tutored",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> NotYetTutoredScreen()));
                   },
                 ),
                 ListTile(

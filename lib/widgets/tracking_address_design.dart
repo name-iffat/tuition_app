@@ -21,7 +21,6 @@ class TrackingAddressDesign extends StatelessWidget {
     FirebaseFirestore.instance.collection("orders")
         .doc(getOrderID)
         .update({
-      "tutorName": sharedPreferences!.get("name"),
       "status": "booking",
       "lat":position!.latitude,
       "lng":position!.longitude,

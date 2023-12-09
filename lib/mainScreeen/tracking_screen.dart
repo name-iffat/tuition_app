@@ -65,7 +65,7 @@ class _TrackingScreenState extends State<TrackingScreen>
       "lng": position!.longitude,
     });
     
-    Navigator.push(context, MaterialPageRoute(builder: (c)=> BookIncomingScreeen(
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> BookIncomingScreen(
       purchaserId: purchaserId,
       purchaserAddress: purchaserAddress,
       purchaserLat: purchaserLat,
