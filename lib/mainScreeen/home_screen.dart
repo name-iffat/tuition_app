@@ -11,6 +11,7 @@ import 'package:tuition_app/widgets/my_drawer.dart';
 import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
+import '../assistantMethods/get_current_location.dart';
 import '../models/tutors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,6 +37,33 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     clearCartNow(context);
+
+    UserLocation uLocation = UserLocation();
+    uLocation.getCurrentLocation();
+    getPerBookTransportAmount();
+    getTransportPreviousEarnings();
+  }
+
+  getTransportPreviousEarnings()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(sharedPreferences!.getString("uid"))
+        .get().then((snap)
+    {
+      previousTransportEarnings = snap.data()!["transport"].toString();
+    });
+  }
+
+  getPerBookTransportAmount()
+  {
+    FirebaseFirestore.instance
+        .collection("perTransport")
+        .doc("amount5km")
+        .get().then((snap)
+    {
+      perBookTransportAmount= snap.data()!["amount"].toString();
+    });
   }
 
   @override

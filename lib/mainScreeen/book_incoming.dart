@@ -34,7 +34,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
   String orderTotalAmount = "";
   confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
   {
-    String transportNewTotalEarningAmount = (previousTransportEarnings + perBookTransportAmount).toString();
+    String transportNewTotalEarningAmount = (double.parse(previousTransportEarnings) + double.parse(perBookTransportAmount)).toString();
 
     FirebaseFirestore.instance
         .collection("orders")
@@ -44,7 +44,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
       "address": completeAddress,
       "lat": position!.latitude,
       "lng": position!.longitude,
-      "earnings":perBookTransportAmount, //pay per tutor
+      "transport":perBookTransportAmount, //pay per tutor
     }).then((value)
     {
       FirebaseFirestore.instance
@@ -52,7 +52,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
           .doc(sharedPreferences!.getString("uid"))
           .update(
           {
-            "earnings": transportNewTotalEarningAmount, //total earnings of tutor transporting
+            "transport": transportNewTotalEarningAmount, //total earnings of tutor transporting
           });
     }).then((value)
     {
@@ -61,7 +61,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
           .doc(widget.tutorId)
           .update(
           {
-            "earnings":(orderTotalAmount + previousEarnings).toString(), //total earnings tutoring
+            "earnings":(double.parse(orderTotalAmount) + double.parse(previousEarnings) + double.parse(perBookTransportAmount)).toString(), //total earnings tutoring
           });
     }).then((value)
     {
@@ -88,6 +88,9 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
     {
       orderTotalAmount = snap.data()!["totalAmount"].toString();
       widget.tutorId = snap.data()!["tutorUID"].toString();
+    }).then((value)
+    {
+      getTutorData();
     });
   }
 
@@ -192,7 +195,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
                   height: 50,
                   child: const Center(
                     child: Text(
-                      "Start Tutoring",
+                      "Im Here! Start Tutoring",
                       style: TextStyle(color: Colors.white, fontSize: 15.0, fontFamily: "Poppins"),
                     ),
                   ),

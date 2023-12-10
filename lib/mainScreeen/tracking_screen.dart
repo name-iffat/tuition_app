@@ -5,6 +5,7 @@ import 'package:tuition_app/mainScreeen/book_incoming.dart';
 import 'package:tuition_app/maps/map_utils.dart';
 
 import '../global/global.dart';
+import 'home_screen.dart';
 
 class TrackingScreen extends StatefulWidget
 {
@@ -165,6 +166,40 @@ class _TrackingScreenState extends State<TrackingScreen>
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: InkWell(
+                onTap: ()
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.cyan,
+                          Colors.blue,
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 0.0),
+                        stops: [0.0,1.0],
+                        tileMode: TileMode.clamp,
+                      )
+                  ),
+                  width: MediaQuery.of(context).size.width - 90,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "Go Back",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
         ],
       ),
     );

@@ -88,6 +88,45 @@ class TrackingAddressDesign extends StatelessWidget {
           ),
         ),
         //GO back btn
+
+        orderStatus == "ended"
+            ? Container()
+            : Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: InkWell(
+              onTap: ()
+              {
+                UserLocation? uLocation = UserLocation();
+                uLocation!.getCurrentLocation();
+                
+                confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.cyan,
+                        Colors.blue,
+                      ],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(1.0, 0.0),
+                      stops: [0.0,1.0],
+                      tileMode: TileMode.clamp,
+                    )
+                ),
+                width: MediaQuery.of(context).size.width - 40,
+                height: 50,
+                child: const Center(
+                  child: Text(
+                    "In Book",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
@@ -122,45 +161,6 @@ class TrackingAddressDesign extends StatelessWidget {
           ),
         ),
 
-        orderStatus == "ended"
-            ? Container()
-            : Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: InkWell(
-              onTap: ()
-              {
-                UserLocation? uLocation = UserLocation();
-                uLocation!.getCurrentLocation();
-                
-                confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
-              },
-              child: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.cyan,
-                        Colors.blue,
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0,1.0],
-                      tileMode: TileMode.clamp,
-                    )
-                ),
-                width: MediaQuery.of(context).size.width - 40,
-                height: 50,
-                child: const Center(
-                  child: Text(
-                    "Confirm - To Booked this Tutor",
-                    style: TextStyle(color: Colors.white, fontSize: 15.0,),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 20,),
       ],
     );
   }
