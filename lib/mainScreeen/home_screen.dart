@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     uLocation.getCurrentLocation();
     getPerBookTransportAmount();
     getTransportPreviousEarnings();
+    getTutorPreviousEarnings();
   }
 
   getTransportPreviousEarnings()
@@ -52,6 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
         .get().then((snap)
     {
       previousTransportEarnings = snap.data()!["transport"].toString();
+    });
+  }
+
+  getTutorPreviousEarnings()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(sharedPreferences!.getString("uid"))
+        .get().then((snap)
+    {
+      double rawTutorEarnings = double.parse(snap.data()!["earnings"].toString());
+      previousTutorEarnings = rawTutorEarnings.toStringAsFixed(2);
     });
   }
 

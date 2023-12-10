@@ -13,3 +13,4 @@ String completeAddress="";
 String perBookTransportAmount="";
 String previousEarnings =''; //tutoring old earnings
 String previousTransportEarnings =""; //tutor transporting old earnings
+String previousTutorEarnings="";
