@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tuition_app/mainScreeen/itemsScreen.dart';
 import 'package:tuition_app/mainScreeen/subjects_screen.dart';
 import 'package:tuition_app/models/subjects.dart';
@@ -23,7 +25,18 @@ class InfoDesignWidget extends StatefulWidget {
 
 }
 
-class _InfoDesignWidgetState extends State<InfoDesignWidget> {
+class _InfoDesignWidgetState extends State<InfoDesignWidget>
+{
+  deleteSubject(String subjectID)
+  {
+    FirebaseFirestore.instance.collection("tutors")
+        .doc(sharedPreferences!.getString("uid"))
+        .collection("subject")
+        .doc(subjectID)
+        .delete();
+
+    Fluttertoast.showToast(msg: "Subject Deleted Successfully.");
+  }
 
 
   @override
@@ -48,7 +61,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
-          height: 285,
+          height: 300,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -63,13 +76,31 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget> {
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 10.0,),
-              Text(
-                userType == "Parent" ? model!.tutorName! : model!.subjectTitle!,
-                style: const TextStyle(
-                  color: Colors.cyan,
-                  fontSize: 20,
-                  fontFamily: "Bebas",
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    userType == "Parent" ? model!.tutorName! : model!.subjectTitle!,
+                    style: const TextStyle(
+                      color: Colors.cyan,
+                      fontSize: 20,
+                      fontFamily: "Bebas",
+                    ),
+                  ),
+                  userType=="Tutor"
+                    ? IconButton(
+                    icon: const Icon(
+                      Icons.delete_sweep,
+                      color: Colors.pinkAccent,
+                    ),
+                      onPressed: ()
+                  {
+                    //delete subject
+                    deleteSubject(widget.subjectsModel!.subjectID!);
+                  },
+                    )
+                      : const Text("")
+                ],
               ),
               Text(
                 userType == "Parent" ? model!.tutorEmail! : model!.subjectInfo!,

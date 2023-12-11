@@ -40,6 +40,11 @@ class MyDrawerTutor extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 20, fontFamily: "Bebas"),
 
                 ),
+                Text(
+                  "RM $previousTutorEarnings",
+                  style: const TextStyle(color: Colors.black, fontSize: 15, fontFamily: "Poppins"),
+
+                )
               ],
             ),
           ),
