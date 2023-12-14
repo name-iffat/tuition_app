@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/history_screen.dart';
 import 'package:tuition_app/mainScreeen/my_orders_screen.dart';
 
 import '../authentication/choose_user.dart';
@@ -79,7 +80,7 @@ class MyDrawer extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> HistoryScreen()));
                   },
                 ),
                 ListTile(

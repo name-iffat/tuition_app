@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
+import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/widgets/order_card.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 import 'package:tuition_app/widgets/simple_app_bar.dart';
 
-import '../global/global.dart';
-
-class TutorOrdersScreen extends StatefulWidget {
-  const TutorOrdersScreen({super.key});
+class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
 
   @override
-  State<TutorOrdersScreen> createState() => _TutorOrdersScreenState();
+  State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _TutorOrdersScreenState extends State<TutorOrdersScreen> {
+class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: SimpleAppBar(title: "New Books",),
+        appBar: SimpleAppBar(title: "History",),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
+              .collection("parents").doc(sharedPreferences!.getString("uid"))
               .collection("orders")
-              .where("tutorUID", isEqualTo: sharedPreferences!.getString("uid"))
-              .where("status", isEqualTo: "normal")
+              .where("status", isEqualTo: "ended")
               .orderBy("orderTime", descending: true)
               .snapshots(),
           builder: (c, snapshot)

@@ -139,7 +139,7 @@ class MyDrawerTutor extends StatelessWidget {
                   ),
                   onTap: (){
                     firebaseAuth.signOut().then((value){
-                      Navigator.push(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
                     });
                   },
                 ),

@@ -91,42 +91,45 @@ class TrackingAddressDesign extends StatelessWidget {
 
         orderStatus == "ended"
             ? Container()
-            : Padding(
+            : Visibility(
+          visible: sharedPreferences!.getString("usertype")! == "Tutor",
+              child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: InkWell(
-              onTap: ()
-              {
-                UserLocation? uLocation = UserLocation();
-                uLocation!.getCurrentLocation();
-                
-                confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
-              },
-              child: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.cyan,
-                        Colors.blue,
-                      ],
-                      begin: FractionalOffset(0.0, 0.0),
-                      end: FractionalOffset(1.0, 0.0),
-                      stops: [0.0,1.0],
-                      tileMode: TileMode.clamp,
-                    )
-                ),
-                width: MediaQuery.of(context).size.width - 40,
-                height: 50,
-                child: const Center(
-                  child: Text(
-                    "In Book",
-                    style: TextStyle(color: Colors.white, fontSize: 15.0,),
+              child: InkWell(
+                onTap: ()
+                {
+                  UserLocation? uLocation = UserLocation();
+                  uLocation!.getCurrentLocation();
+
+                  confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.cyan,
+                          Colors.blue,
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(1.0, 0.0),
+                        stops: [0.0,1.0],
+                        tileMode: TileMode.clamp,
+                      )
+                  ),
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "In Book",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                    ),
                   ),
                 ),
               ),
-            ),
           ),
         ),
+            ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(

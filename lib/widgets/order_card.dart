@@ -31,11 +31,11 @@ class OrderCard extends StatelessWidget
         Navigator.push(context, MaterialPageRoute(builder: (c)=> userType == "Parent" ? OrderDetailsScreen(orderID: orderID) : TutorOrderDetailsScreen(orderID: orderID)));
       },
       child: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.cyan,
-                Colors.cyanAccent,
+                Colors.blueGrey.shade100,
+                Colors.blueGrey.shade50,
               ],
               begin: FractionalOffset(0.0, 0.0),
               end:  FractionalOffset(1.0, 0.0),
@@ -45,7 +45,7 @@ class OrderCard extends StatelessWidget
         ),
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(10),
-        height: itemCount! * 125,
+        height: itemCount! * 105,
         child: ListView.builder(
           itemCount: itemCount,
           physics: NeverScrollableScrollPhysics(),
@@ -69,7 +69,7 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
 {
   return Container(
     width: MediaQuery.of(context).size.width,
-    height: 120,
+    height: 100,
     color: Colors.grey[200],
     child: Row(
       children: [
@@ -79,6 +79,7 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 15.0,),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -87,8 +88,9 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                       model.title!,
                       style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
-                        fontFamily: "Poppins"
+                        fontSize: 14,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -100,8 +102,8 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                   Text(
                     model.price.toString(),
                     style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18.0,
+                      color: Colors.blueAccent,
+                      fontSize: 17.0,
                     ),
                   ),
                 ],
@@ -121,7 +123,7 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                       seperateQuantitiesList,
                       style: const TextStyle(
                         color: Colors.black54,
-                        fontSize: 30,
+                        fontSize: 20,
                         fontFamily: "Poppins",
                       ),
                     ),
