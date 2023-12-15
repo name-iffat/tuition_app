@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/address_screen.dart';
 import 'package:tuition_app/mainScreeen/history_screen.dart';
 import 'package:tuition_app/mainScreeen/my_orders_screen.dart';
+import 'package:tuition_app/mainScreeen/search_screen.dart';
 
 import '../authentication/choose_user.dart';
 import '../mainScreeen/home_screen.dart';
@@ -90,7 +92,7 @@ class MyDrawer extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> SearchScreen()));
                   },
                 ),
                 ListTile(
@@ -100,7 +102,7 @@ class MyDrawer extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: (){
-
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> AddressScreen()));
                   },
                 ),
                 ListTile(
