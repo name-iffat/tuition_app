@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/address_screen.dart';
 import 'package:tuition_app/mainScreeen/history_screen.dart';
+import 'package:tuition_app/mainScreeen/map_demo_screen.dart';
 import 'package:tuition_app/mainScreeen/my_orders_screen.dart';
 import 'package:tuition_app/mainScreeen/search_screen.dart';
 
@@ -63,6 +64,16 @@ class MyDrawer extends StatelessWidget {
                   ),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.map,color: Colors.black,),
+                  title: const Text(
+                    "Map",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> FullMap()));
                   },
                 ),
                 ListTile(

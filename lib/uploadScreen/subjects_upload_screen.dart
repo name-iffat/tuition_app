@@ -25,6 +25,10 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
+  // Checkbox state variables
+  bool _tapahChecked = false;
+  bool _kamparChecked = false;
+  bool _bidorChecked = false;
 
   defaultScreen()
   {
@@ -260,6 +264,27 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
               ),
             ),
           ),
+          ListTile(
+          title: Text("Tapah"),
+          leading: Checkbox(
+          value: _tapahChecked,
+          onChanged: (value) => setState(() => _tapahChecked = value!),
+          ),
+          ),
+          ListTile(
+          title: Text("Kampar"),
+            leading: Checkbox(
+            value: _kamparChecked,
+            onChanged: (value) => setState(() => _kamparChecked = value!),
+          ),
+          ),
+          ListTile(
+            title: Text("Bidor"),
+            leading: Checkbox(
+          value: _bidorChecked,
+          onChanged: (value) => setState(() => _bidorChecked = value!),
+          ),
+          ),
         ],
       ),
     );
@@ -331,12 +356,32 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
       "publishedDate" : DateTime.now(),
       "status" : "available",
       "thumbnailUrl" : downloadUrl,
-    });
+      'tapahChecked': _tapahChecked,
+      'kamparChecked': _kamparChecked,
+      'bidorChecked': _bidorChecked,
+    }).then((value) {
+      final SubjectRef = FirebaseFirestore.instance
+          .collection("subjects");
 
-    clearSubjectUploadForm();
-    setState(() {
-      uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
-      uploading =false ;
+      SubjectRef.doc(uniqueIdName).set({
+        "subjectID": uniqueIdName,
+        "tutorUID": sharedPreferences!.getString("uid"),
+        "subjectInfo": shortInfoController.text.toString(),
+        "subjectTitle": titleController.text.toString(),
+        "publishedDate": DateTime.now(),
+        "status": "available",
+        "thumbnailUrl": downloadUrl,
+        'tapahChecked': _tapahChecked,
+        'kamparChecked': _kamparChecked,
+        'bidorChecked': _bidorChecked,
+      });
+    }).then((value)
+    {
+      clearSubjectUploadForm();
+      setState(() {
+        uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
+        uploading =false ;
+      });
     });
   }
 

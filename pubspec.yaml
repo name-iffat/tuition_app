@@ -50,8 +50,8 @@ dependencies:
   provider: ^6.0.5
   url_launcher: ^6.2.1
   intl: ^0.17.0
-  lottie: ^2.7.0
-
+  mapbox_maps_flutter: ^0.5.1
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:

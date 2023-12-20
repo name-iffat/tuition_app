@@ -5,6 +5,7 @@ import 'package:tuition_app/mainScreeen/itemsScreen.dart';
 import 'package:tuition_app/mainScreeen/subjects_screen.dart';
 import 'package:tuition_app/models/subjects.dart';
 import '../global/global.dart';
+import '../models/items.dart';
 import '../models/tutors.dart';
 
 class InfoDesignWidget extends StatefulWidget {
@@ -14,6 +15,7 @@ class InfoDesignWidget extends StatefulWidget {
 
   late Tutors tutorsModel;
   late Subjects subjectsModel;
+  late Items itemsModel;
 
 
   InfoDesignWidget.tutors({required this.tutorsModel, required this.context});
@@ -27,15 +29,39 @@ class InfoDesignWidget extends StatefulWidget {
 
 class _InfoDesignWidgetState extends State<InfoDesignWidget>
 {
-  deleteSubject(String subjectID)
-  {
-    FirebaseFirestore.instance.collection("tutors")
-        .doc(sharedPreferences!.getString("uid"))
-        .collection("subject")
-        .doc(subjectID)
-        .delete();
+  Future<void> deleteSubject(String subjectID) async {
+    try {
+      final batch = FirebaseFirestore.instance.batch();
 
-    Fluttertoast.showToast(msg: "Subject Deleted Successfully.");
+      // Delete main subject document
+      batch.delete(FirebaseFirestore.instance.collection("tutors").doc(sharedPreferences!.getString("uid")).collection("subject").doc(subjectID));
+
+      // Delete subject document from main subjects collection (if needed)
+      // separate "subjects" collection
+      batch.delete(FirebaseFirestore.instance.collection("subjects").doc(subjectID));
+
+      final itemCollection = FirebaseFirestore.instance.collection("tutors").doc(sharedPreferences!.getString("uid")).collection("subject").doc(subjectID);
+      // Delete all subcollections and documents
+      await deleteAllSubcollectionsAndDocumentsWithRoot(batch, itemCollection);
+
+      await batch.commit();
+
+      Fluttertoast.showToast(msg: "Subject Deleted Successfully.");
+    } catch (error) {
+      // Handle any potential errors here
+      print(error);
+      Fluttertoast.showToast(msg: "Error deleting subject: $error");
+    }
+  }
+
+  Future<void> deleteAllSubcollectionsAndDocumentsWithRoot(batch, DocumentReference subcollectionRef) async {
+    final querySnapshot = await subcollectionRef.collection("items").get();
+
+    for (var doc in querySnapshot.docs) {
+      await deleteAllSubcollectionsAndDocumentsWithRoot(batch, doc.reference);
+    }
+
+    await subcollectionRef.delete();
   }
 
 
@@ -104,7 +130,7 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget>
               ),
               Text(
                 userType == "Parent" ? model!.tutorEmail! : model!.subjectInfo!,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.cyan,
                   fontSize: 12,
                   fontFamily: "Bebas",

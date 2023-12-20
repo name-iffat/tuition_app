@@ -11,6 +11,7 @@ import 'package:tuition_app/widgets/my_drawer.dart';
 import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
+import '../assistantMethods/directions_handler.dart';
 import '../assistantMethods/get_current_location.dart';
 import '../models/tutors.dart';
 
@@ -79,9 +80,36 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> getDirectionAPI() async
+   {
+    //get and store direction API response in sharedPreference
+    final tutorsCollection = FirebaseFirestore.instance.collection("tutors");
+    for (var tutorDoc in await tutorsCollection.get().then((snapshot) => snapshot.docs))
+    {
+      final tutorLat = tutorDoc.data()["lat"];
+      final tutorLng = tutorDoc.data()["lng"];
+
+      Map modifiedResponse = await getDirectionsTutorAPIResponse(
+          position!.latitude,
+          position!.longitude,
+          tutorLat,
+          tutorLng,
+          tutorDoc.data()["tutorName"]
+      );
+      print("Position: $position");
+      print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
+      print("Modified Response: $modifiedResponse");
+      print(tutorDoc.data()["tutorUID"]);
+      SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], modifiedResponse.toString());
+    }
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     String userType = sharedPreferences!.getString("usertype")! ;
+    getDirectionAPI();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(

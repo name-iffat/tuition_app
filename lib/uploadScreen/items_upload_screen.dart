@@ -414,8 +414,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
         uploading =false ;
       });
-    }
-    );
+    });
   }
 
   uploadImage(mImageFile) async
