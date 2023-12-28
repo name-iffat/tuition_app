@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/address_screen.dart';
 import 'package:tuition_app/mainScreeen/history_screen.dart';
-import 'package:tuition_app/mainScreeen/map_demo_screen.dart';
+import 'package:tuition_app/mainScreeen/map_parent_screen.dart';
 import 'package:tuition_app/mainScreeen/my_orders_screen.dart';
 import 'package:tuition_app/mainScreeen/search_screen.dart';
 

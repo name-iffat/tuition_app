@@ -52,6 +52,10 @@ dependencies:
   intl: ^0.17.0
   mapbox_maps_flutter: ^0.5.1
   dio: ^5.4.0
+  location: ^5.0.0
+  permission_handler: ^11.0.0
+  flutter_dotenv: ^5.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +83,7 @@ flutter:
   assets:
     - images/
     - slider/
+    - assets/config/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

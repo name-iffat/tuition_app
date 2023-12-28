@@ -14,3 +14,6 @@ String perBookTransportAmount="";
 String previousEarnings =''; //tutoring old earnings
 String previousTransportEarnings =""; //tutor transporting old earnings
 String previousTutorEarnings="";
+
+num distance = 0;
+num duration = 0;

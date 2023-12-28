@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuition_app/assistantMethods/address_changer.dart';
@@ -14,6 +15,7 @@ Future<void> main() async{
 
   sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
+  await dotenv.load(fileName: "assets/config/.env");
 
   runApp(const MyApp());
 }

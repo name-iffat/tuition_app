@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
@@ -44,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
     getPerBookTransportAmount();
     getTransportPreviousEarnings();
     getTutorPreviousEarnings();
+    getDirectionAPI();
+    _checkLocationPermission();
   }
 
   getTransportPreviousEarnings()
@@ -100,16 +105,77 @@ class _HomeScreenState extends State<HomeScreen> {
       print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
       print("Modified Response: $modifiedResponse");
       print(tutorDoc.data()["tutorUID"]);
-      SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], modifiedResponse.toString());
+      SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], json.encode(modifiedResponse));
     }
 
+  }
+
+  Future<void> _checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      var result = await Permission.location.request();
+      if (result.isGranted) {
+        // Location permission granted
+        _accessLocation();
+      } else {
+        // Location permission denied
+        _handlePermissionDenied();
+      }
+    } else if (status.isGranted) {
+      // Location permission already granted
+      _accessLocation();
+    } else {
+      // Location permission permanently denied
+      _handlePermissionPermanentlyDenied();
+    }
+  }
+  void _accessLocation() {
+    // Access location services here
+    print("Accessing location services...");
+  }
+  void _handlePermissionDenied() {
+    // Show a rationale for using location
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Location Permission Required"),
+        content: Text("This app needs location access to provide accurate features."),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              // Request permission again
+              await _checkLocationPermission();
+            },
+            child: Text("Allow"),
+          ),
+        ],
+      ),
+    );
+  }
+  void _handlePermissionPermanentlyDenied() {
+    // Guide user to app settings to enable permission
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Location Permission Disabled"),
+        content: Text("This app requires location permission to function properly. Please enable it in app settings."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              openAppSettings();
+            },
+            child: Text("Open Settings"),
+          ),
+        ],
+      ),
+    );
   }
 
 
   @override
   Widget build(BuildContext context) {
     String userType = sharedPreferences!.getString("usertype")! ;
-    getDirectionAPI();
+    //getDirectionAPI();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(

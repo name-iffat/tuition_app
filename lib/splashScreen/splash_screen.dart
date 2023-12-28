@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
@@ -33,6 +32,8 @@ class _MySplashScreenState extends State<MySplashScreen>
         }
     });
   }
+
+
 
   @override
   void initState() {
