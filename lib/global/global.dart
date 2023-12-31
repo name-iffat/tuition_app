@@ -17,3 +17,4 @@ String previousTutorEarnings="";
 
 num distance = 0;
 num duration = 0;
+

@@ -28,3 +28,11 @@ num getDurationFromSharedPreference(String tutorID)
   num duration = decodedResponse['duration'];
   return duration;
 }
+
+num getGeometryFromSharedPrefs(String tutorID) {
+  final id = tutorID;
+  String? response = sharedPreferences!.getString("tutor_$id");
+  Map decodedResponse = json.decode(response!);
+  num geometry = decodedResponse['geometry'];
+  return geometry;
+}
