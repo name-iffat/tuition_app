@@ -29,10 +29,10 @@ num getDurationFromSharedPreference(String tutorID)
   return duration;
 }
 
-num getGeometryFromSharedPrefs(String tutorID) {
+Map getGeometryFromSharedPrefs(String tutorID) {
   final id = tutorID;
   String? response = sharedPreferences!.getString("tutor_$id");
   Map decodedResponse = json.decode(response!);
-  num geometry = decodedResponse['geometry'];
+  Map geometry = decodedResponse['geometry'];
   return geometry;
 }

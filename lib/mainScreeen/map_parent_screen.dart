@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -111,11 +112,11 @@ class FullMapState extends State<FullMap> {
     final QuerySnapshot tutorStream = await FirebaseFirestore.instance
         .collection('tutors')
         .get();
-    for (int index = 0; index < tutorStream.docs.length; index++) {
+
       //Tutors sModel = Tutors.fromJson(tutorStream.docs[index].data()! as Map<String ,dynamic>);
       String tutorID = tutorStream.docs[index].get("tutorUID");
 
-      Map geometry = getGeometryFromSharedPrefs(tutorID) as Map<String,dynamic>;
+      Map geometry = getGeometryFromSharedPrefs(tutorID);
       final fills =
       {
         "type": "FeatureCollection",
@@ -127,7 +128,7 @@ class FullMapState extends State<FullMap> {
             "geometry": geometry,
           },
         ],
-      } as String;
+      };
 
       // Remove lineLayer and source if it exists
       if (removeLayer == true) {
@@ -139,7 +140,7 @@ class FullMapState extends State<FullMap> {
       await mapboxMap!.style.addSource(
         GeoJsonSource(
           id: 'fills',
-          data: fills,
+          data: json.encode(fills),
         ),
 
       );
@@ -154,8 +155,6 @@ class FullMapState extends State<FullMap> {
           lineWidth: 2.0,
         ),
       );
-
-    }
 
   }
 
@@ -212,7 +211,7 @@ class FullMapState extends State<FullMap> {
           child: Stack(
             children: [
               SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height,
               child: MapWidget(
                 key: ValueKey("mapWidget"),
                 resourceOptions: ResourceOptions(accessToken: dotenv.env['ACCESS_TOKEN']!),
