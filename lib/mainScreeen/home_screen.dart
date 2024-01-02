@@ -8,15 +8,15 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
+import 'package:tuition_app/models/subjects.dart';
 import 'package:tuition_app/uploadScreen/subjects_upload_screen.dart';
-import 'package:tuition_app/widgets/info_design.dart';
 import 'package:tuition_app/widgets/my_drawer.dart';
 import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
 import '../assistantMethods/directions_handler.dart';
 import '../assistantMethods/get_current_location.dart';
-import '../models/tutors.dart';
+import '../widgets/subjects_design.dart';
 
 class HomeScreen extends StatefulWidget {
    const HomeScreen({super.key});
@@ -26,6 +26,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isSelected = false;
+
 
   final items ={
     "slider/a.jpeg",
@@ -183,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -220,16 +222,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    height: 400,
+                    height: 200,
                     aspectRatio: 16/9,
                     viewportFraction: 0.8,
                     initialPage: 0,
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 2),
-                    autoPlayAnimationDuration: Duration(milliseconds: 500),
-                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayInterval: Duration(seconds: 6),
+                    autoPlayAnimationDuration: Duration(milliseconds: 600),
+                    autoPlayCurve: Curves.linear,
                     enlargeCenterPage: true,
                     enlargeFactor: 0.3,
                     scrollDirection: Axis.horizontal,
@@ -237,18 +239,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   items: items.map((index) {
                     return Builder(builder: (BuildContext context){
                       return Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
                         width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.symmetric(horizontal: 1.0),
                         decoration: const BoxDecoration(
-                          color: Colors.black,
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.cyan,
+                                Colors.blue,
+                              ],
+                              begin: const FractionalOffset(0.0, 0.0),
+                              end: const FractionalOffset(1.0, 0.0),
+                              stops: [0.0,1.0],
+                              tileMode: TileMode.clamp,
+                            ),
+                          // color: Colors.lightBlue,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Image.asset(
-                            index,
-                            fit: BoxFit.fill,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                            child: Image.asset(
+                              index,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ),
                       );
                     });
                   }).toList(),
@@ -256,25 +270,96 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+           SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left:10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    const Text(
+                      "Subjects",
+                      style: TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 30,
+                        fontFamily: "Bebas",
+                      ),
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FilterChip(
+                          label: const Text("All",style: TextStyle(color: Colors.white),),
+                          selected: !isSelected,
+                          selectedColor: Colors.lightBlueAccent,
+                          checkmarkColor: Colors.white,
+                          // selectedShadowColor: Colors.blue,
+                          onSelected: (bool value)
+                          {
+                            setState(() {
+                              isSelected = !isSelected;
+                            });
+                          }),
+                      FilterChip(
+                          label: const Text("Tapah",style: TextStyle(color: Colors.white),),
+                          selected: isSelected,
+                          selectedColor: Colors.lightBlueAccent,
+                          checkmarkColor: Colors.white,
+                          // selectedShadowColor: Colors.blue,
+                          onSelected: (bool value)
+                          {
+                            setState(() {
+                              isSelected = !isSelected;
+                            });
+                          }),
+                      FilterChip(
+                          label: const Text("Bidor",style: TextStyle(color: Colors.white),),
+                          selected: isSelected,
+                          selectedColor: Colors.lightBlueAccent,
+                          checkmarkColor: Colors.white,
+                          // selectedShadowColor: Colors.blue,
+                          onSelected: (bool value)
+                          {
+                            setState(() {
+                              isSelected = !isSelected;
+                            });
+                          }),
+                      FilterChip(
+                          label: const Text("Kampar",style: TextStyle(color: Colors.white),),
+                          selected: isSelected,
+                          selectedColor: Colors.lightBlueAccent,
+                          checkmarkColor: Colors.white,
+                          // selectedShadowColor: Colors.blue,
+                          onSelected: (bool value)
+                          {
+                            setState(() {
+                              isSelected = !isSelected;
+                            });
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                .collection("tutors")
+                .collection("subjects")
                 .snapshots(),
             builder: (context, snapshot)
             {
               return !snapshot.hasData
                   ? SliverToBoxAdapter(child: Center(child: circularProgress(),),)
-                  : SliverStaggeredGrid.countBuilder(
+                  : SliverAlignedGrid.count(
                 crossAxisCount: 1,
-                staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                 itemBuilder: (context, index)
                 {
-                  Tutors sModel = Tutors.fromJson(
+                  Subjects sModel = Subjects.fromJson(
                     snapshot.data!.docs[index].data()! as Map<String ,dynamic>
                   );
                   //design for display tutors
-                  return InfoDesignWidget.tutors(
-                      tutorsModel: sModel,
+                  return SubjectsDesignWidget(
+                      subjectsModel: sModel,
                       context: context
                   );
                 },

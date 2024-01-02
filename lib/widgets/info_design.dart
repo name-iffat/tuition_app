@@ -84,59 +84,63 @@ class _InfoDesignWidgetState extends State<InfoDesignWidget>
       : Navigator.push(context, MaterialPageRoute(builder: (c)=> ItemsScreen(model: model)));
       },
       splashColor: Colors.amber,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Container(
-          height: 300,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Divider(
-                height: 4,
-                thickness: 3,
-                color: Colors.grey[300],
-              ),
-              Image.network(
-                userType == "Parent" ? model.tutorAvatarUrl! : model.thumbnailUrl! ,
-                height: 220.0,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 10.0,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    userType == "Parent" ? model!.tutorName! : model!.subjectTitle!,
-                    style: const TextStyle(
-                      color: Colors.cyan,
-                      fontSize: 20,
-                      fontFamily: "Bebas",
-                    ),
-                  ),
-                  userType=="Tutor"
-                    ? IconButton(
-                    icon: const Icon(
-                      Icons.delete_sweep,
-                      color: Colors.pinkAccent,
-                    ),
-                      onPressed: ()
-                  {
-                    //delete subject
-                    deleteSubject(widget.subjectsModel!.subjectID!);
-                  },
-                    )
-                      : const Text("")
-                ],
-              ),
-              Text(
-                userType == "Parent" ? model!.tutorEmail! : model!.subjectInfo!,
-                style: const TextStyle(
-                  color: Colors.cyan,
-                  fontSize: 12,
-                  fontFamily: "Bebas",
+      child: Card(
+        elevation: 3.0,
+        margin: const EdgeInsets.all(15.0),
+        child: Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: Container(
+            height: 210,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                // Divider(
+                //   height: 4,
+                //   thickness: 3,
+                //   color: Colors.grey[300],
+                // ),
+                Image.network(
+                  userType == "Parent" ? model.tutorAvatarUrl! : model.thumbnailUrl! ,
+                  height: 150.0,
+                  fit: BoxFit.contain,
                 ),
-              ),
-            ],
+                SizedBox(height: 10.0,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      userType == "Parent" ? model!.tutorName! : model!.subjectTitle!,
+                      style: const TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 20,
+                        fontFamily: "Bebas",
+                      ),
+                    ),
+                    userType=="Tutor"
+                      ? IconButton(
+                      icon: const Icon(
+                        Icons.delete_sweep,
+                        color: Colors.pinkAccent,
+                      ),
+                        onPressed: ()
+                    {
+                      //delete subject
+                      deleteSubject(widget.subjectsModel!.subjectID!);
+                    },
+                      )
+                        : const Text("")
+                  ],
+                ),
+                Text(
+                  userType == "Parent" ? model!.tutorEmail! : model!.subjectInfo!,
+                  style: const TextStyle(
+                    color: Colors.cyan,
+                    fontSize: 12,
+                    fontFamily: "Bebas",
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

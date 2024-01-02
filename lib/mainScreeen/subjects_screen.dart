@@ -23,6 +23,7 @@ class SubjectsScreen extends StatefulWidget {
 class _SubjectsScreenState extends State<SubjectsScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
@@ -98,9 +99,9 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                 ? SliverToBoxAdapter(
               child: Center(child: circularProgress(),) ,
             )
-                : SliverStaggeredGrid.countBuilder(
+                : SliverAlignedGrid.count(
               crossAxisCount: 1,
-              staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+              //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
               itemBuilder: (context, index)
               {
                 Subjects model = Subjects.fromJson(

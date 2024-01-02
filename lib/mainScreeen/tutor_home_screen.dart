@@ -35,9 +35,9 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                 ? SliverToBoxAdapter(
                   child: Center(child: circularProgress(),) ,
             )
-                : SliverStaggeredGrid.countBuilder(
+                : SliverAlignedGrid.count(
                     crossAxisCount: 1,
-                    staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                    //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                     itemBuilder: (context, index)
                     {
                       Subjects model = Subjects.fromJson(

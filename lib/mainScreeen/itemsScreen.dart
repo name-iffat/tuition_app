@@ -78,9 +78,9 @@ class _ItemsScreenState extends State<ItemsScreen>
                   ? SliverToBoxAdapter(
                 child: Center(child: circularProgress(),) ,
               )
-                  : SliverStaggeredGrid.countBuilder(
+                  : SliverAlignedGrid.count(
                 crossAxisCount: 1,
-                staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
                 itemBuilder: (context, index)
                 {
                   Items model = Items.fromJson(
