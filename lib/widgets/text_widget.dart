@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class TextWidgetHeader extends SliverPersistentHeaderDelegate
 {
   String? title;
-  TextWidgetHeader({this.title});
+  final String? tutorUID;
+
+  TextWidgetHeader({this.title, this.tutorUID});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent,) {

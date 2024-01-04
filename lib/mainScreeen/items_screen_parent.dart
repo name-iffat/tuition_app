@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:tuition_app/widgets/app_bar.dart';
 import 'package:tuition_app/widgets/items_design.dart';
 
 import '../models/items.dart';
 import '../models/subjects.dart';
+import '../widgets/item_app_bar.dart';
 import '../widgets/progress_bar.dart';
-import '../widgets/text_widget.dart';
 
 
 class ItemsScreenParent extends StatefulWidget {
@@ -22,10 +21,11 @@ class _ItemsScreenParentState extends State<ItemsScreenParent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: ItemAppBar(tutorUID: widget.subjectsModel?.tutorUID??"",),
       body:CustomScrollView(
         slivers: [
-          SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "Items of ${widget.subjectsModel!.subjectTitle}")),
+          // SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "Items of ${widget.subjectsModel!.subjectTitle}")),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("tutors")

@@ -56,11 +56,12 @@ class _SubjectsDesignWidgetState extends State<SubjectsDesignWidget> {
                 ClipRRect(
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(10.0),topRight: Radius.circular(10.0)),
 
-                  child: Image.network(
-                    widget.subjectsModel.thumbnailUrl! ,
+                  child: FadeInImage.assetNetwork(
+                    image:widget.subjectsModel.thumbnailUrl! ,
                     height: MediaQuery.of(context).size.width * 0.3,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
+                    placeholder: "images/placeholder.jpg",
                   ),
                 ),
                 Padding(

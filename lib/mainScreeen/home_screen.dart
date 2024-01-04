@@ -27,6 +27,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isSelected = false;
+  List<String> selectedFilters = [];
+  bool isFilterVisible = false;
 
 
   final items ={
@@ -172,6 +174,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+  void _handleFilterSelection(String value, bool selected) {
+    setState(() {
+      if (value == "All") {
+        if (selected) {
+          selectedFilters.clear(); // Clear all other selections if All is selected
+        } else {
+          selectedFilters.add(value);
+          // Do nothing if All is deselected (other selections remain)
+        }
+      } else { // For other chips
+        if (selected) {
+          selectedFilters.add(value);
+        } else {
+          selectedFilters.remove(value);
+        }
+      }
+      // Apply filtering logic based on selectedFilters
+    });
+  }
 
 
   @override
@@ -275,6 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(left:10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                     const Text(
                       "Subjects",
@@ -284,58 +306,44 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontFamily: "Bebas",
                       ),
                     ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FilterChip(
-                          label: const Text("All",style: TextStyle(color: Colors.white),),
-                          selected: !isSelected,
+                  ElevatedButton(
+                      onPressed: () => setState(() => isFilterVisible = !isFilterVisible),
+                      child: const Text("Filter"),
+                  ),
+                  Visibility(
+                    visible: isFilterVisible,
+                    child: Wrap(
+                      children: [
+                        FilterChip(
+                          label: const Text("All", style: TextStyle(color: Colors.white)),
+                          selected: selectedFilters.contains("All"),
+                          selectedColor: selectedFilters.contains("All") ? Colors.lightGreen : Colors.lightBlueAccent, // Change color based on "All" selection, // Change color based on "All" selection
+                          checkmarkColor: selectedFilters.contains("All") ? Colors.white : Colors.white,
+                          onSelected: (selected) => _handleFilterSelection("All", selected),
+                        ),
+                        FilterChip(
+                          label: const Text("Tapah", style: TextStyle(color: Colors.white)),
+                          selected: selectedFilters.contains("Tapah"),
                           selectedColor: Colors.lightBlueAccent,
                           checkmarkColor: Colors.white,
-                          // selectedShadowColor: Colors.blue,
-                          onSelected: (bool value)
-                          {
-                            setState(() {
-                              isSelected = !isSelected;
-                            });
-                          }),
-                      FilterChip(
-                          label: const Text("Tapah",style: TextStyle(color: Colors.white),),
-                          selected: isSelected,
+                          onSelected: (selected) => _handleFilterSelection("Tapah", selected),
+                        ),
+                        FilterChip(
+                          label: const Text("Bidor", style: TextStyle(color: Colors.white)),
+                          selected: selectedFilters.contains("Bidor"),
                           selectedColor: Colors.lightBlueAccent,
                           checkmarkColor: Colors.white,
-                          // selectedShadowColor: Colors.blue,
-                          onSelected: (bool value)
-                          {
-                            setState(() {
-                              isSelected = !isSelected;
-                            });
-                          }),
-                      FilterChip(
-                          label: const Text("Bidor",style: TextStyle(color: Colors.white),),
-                          selected: isSelected,
+                          onSelected: (selected) => _handleFilterSelection("Bidor", selected),
+                        ),
+                        FilterChip(
+                          label: const Text("Kampar", style: TextStyle(color: Colors.white)),
+                          selected: selectedFilters.contains("Kampar"),
                           selectedColor: Colors.lightBlueAccent,
                           checkmarkColor: Colors.white,
-                          // selectedShadowColor: Colors.blue,
-                          onSelected: (bool value)
-                          {
-                            setState(() {
-                              isSelected = !isSelected;
-                            });
-                          }),
-                      FilterChip(
-                          label: const Text("Kampar",style: TextStyle(color: Colors.white),),
-                          selected: isSelected,
-                          selectedColor: Colors.lightBlueAccent,
-                          checkmarkColor: Colors.white,
-                          // selectedShadowColor: Colors.blue,
-                          onSelected: (bool value)
-                          {
-                            setState(() {
-                              isSelected = !isSelected;
-                            });
-                          }),
-                    ],
+                          onSelected: (selected) => _handleFilterSelection("Kampar", selected),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
