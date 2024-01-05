@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tuition_app/widgets/items_design.dart';
+import 'package:tuition_app/widgets/tutor_img.dart';
 
 import '../models/items.dart';
 import '../models/subjects.dart';
@@ -26,6 +27,9 @@ class _ItemsScreenParentState extends State<ItemsScreenParent> {
       body:CustomScrollView(
         slivers: [
           // SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "Items of ${widget.subjectsModel!.subjectTitle}")),
+          SliverToBoxAdapter(
+            child: TutorImg(tutorUID: widget.subjectsModel?.tutorUID??"",),
+          ),
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("tutors")

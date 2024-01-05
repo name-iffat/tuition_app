@@ -62,7 +62,7 @@ class _ItemAppBarState extends State<ItemAppBar> {
       //     )
       // ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: const CircleAvatar(child: Icon(Icons.arrow_back)),
         onPressed: ()
         {
           Navigator.pop(context);
@@ -77,7 +77,7 @@ class _ItemAppBarState extends State<ItemAppBar> {
         Stack(
           children: [
             IconButton(
-              icon: const Icon(Icons.shopping_bag, color: Colors.white,),
+              icon: const CircleAvatar(child: Icon(Icons.shopping_bag, color: Colors.white, )),
               onPressed: ()
               {
                 //send user to cart screen
@@ -90,7 +90,7 @@ class _ItemAppBarState extends State<ItemAppBar> {
                   const Icon(
                     Icons.brightness_1,
                     size: 20,
-                    color: Colors.green,
+                    color: Colors.cyan,
                   ),
                   Positioned(
                     top: 3,
