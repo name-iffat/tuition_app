@@ -53,27 +53,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Image.network(widget.model!.thumbnailUrl.toString(),height: 220.0,fit: BoxFit.cover,),
-          ),
-          Visibility(
-            visible: userType == "Parent",
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: NumberInputPrefabbed.roundedButtons(
-                controller: counterTextEditingController,
-                incDecBgColor: Colors.cyan,
-                min: 1,
-                max: 9,
-                initialValue: 1,
-                buttonArrangement: ButtonArrangement.incRightDecLeft,
-              ),
-            ),
+            child: Image.network(widget.model!.thumbnailUrl.toString(),height:MediaQuery.sizeOf(context).width * 0.6,fit: BoxFit.cover ,),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               widget.model!.title.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,),
             ),
           ),
           Padding(
@@ -87,11 +73,63 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "RM " + widget.model!.price.toString(),
+              "RM ${widget.model!.price} per session",
               textAlign: TextAlign.justify,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),
             ),
           ),
+
+          Center(
+            child: Visibility(
+              visible: userType == "Parent",
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: NumberInputWithIncrementDecrement(
+                    widgetContainerDecoration: const BoxDecoration(
+                      border: Border.symmetric(),
+                    ),
+                    incIconSize: 55,
+                    decIconSize: 50,
+                    incIconColor: Colors.lightBlue[800],
+                    decIconColor: Colors.lightBlue[800],
+                    numberFieldDecoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    style: const TextStyle(fontSize: 35,fontFamily: "Poppins", fontWeight: FontWeight.bold),
+                    incIcon: Icons.add,
+                    decIcon: Icons.remove,
+                    controller: counterTextEditingController,
+                    incDecBgColor: Colors.white,
+                    incIconDecoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.blueAccent,
+                        width: 1.5,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                    decIconDecoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.blueAccent,
+                        width: 1.5,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+
+                    min: 1,
+                    max: 9,
+                    initialValue: 1,
+                    buttonArrangement: ButtonArrangement.incRightDecLeft,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+
           const SizedBox(height: 10,),
           Center(
             child: userType =="Parent"
@@ -111,11 +149,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 addItemToChart(widget.model!.itemID, context, itemCounter);
               },
               child: Container(
+                margin: const EdgeInsets.only(top: 5),
                 decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                     gradient: LinearGradient(
                       colors: [
                         Colors.cyan,
-                        Colors.amber,
+                        Colors.blue,
                       ],
                       begin: const FractionalOffset(0.0, 0.0),
                       end: const FractionalOffset(1.0, 0.0),
@@ -123,12 +163,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       tileMode: TileMode.clamp,
                     )
                 ),
-                width: MediaQuery.of(context).size.width - 12,
-                height: 50,
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 60,
                 child: const Center(
                   child: Text(
-                    "Book to Cart",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    "Add to Cart",
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Poppins"),
                   ),
                 ),
 

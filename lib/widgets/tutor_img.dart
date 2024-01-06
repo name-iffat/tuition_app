@@ -16,6 +16,10 @@ class TutorImg extends StatefulWidget {
 class _TutorImgState extends State<TutorImg> {
   String? tutorAvatarUrl; // State variable for the fetched image URL
   String? tutorName;
+  String? phone;
+  String? email;
+
+
   String skeletonImg = "https://cdn.discordapp.com/attachments/1186076047872110712/1192522621678534716/image.png?ex=65a9623d&is=6596ed3d&hm=ed7c4b2dcda7bc3cc27f342fe91fbfb3685d475a16820e3425ee486e2aa211f8&";
 
 
@@ -32,9 +36,13 @@ class _TutorImgState extends State<TutorImg> {
     {
       tutorAvatarUrl = snap.data()!["tutorAvatarUrl"].toString();
       tutorName = snap.data()!["tutorName"].toString();
+      phone = snap.data()!["phone"].toString();
+      email = snap.data()!["tutorEmail"].toString();
       setState(() {
         tutorAvatarUrl = tutorAvatarUrl;
         tutorName = tutorName;
+        phone = phone;
+        email = email;
       });
     });
   }
@@ -132,6 +140,13 @@ Widget _buildTextIcon(IconData icon,Color color, String text) {
               Text(
                 tutorName ?? "Tutor",
                 style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildTextIcon(Icons.email_outlined, Colors.blueAccent, email ?? ""),
+                  _buildTextIcon(Icons.phone_outlined, Colors.blueAccent, phone ?? ""),
+                ],
               ),
               const SizedBox(height: 5,),
               Row(
