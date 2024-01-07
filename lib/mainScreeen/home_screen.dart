@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getPerBookTransportAmount();
     getTransportPreviousEarnings();
     getTutorPreviousEarnings();
-    getDirectionAPI();
+    //getDirectionAPI();
     _checkLocationPermission();
   }
 
@@ -89,30 +89,31 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> getDirectionAPI() async
-   {
-    //get and store direction API response in sharedPreference
-    final tutorsCollection = FirebaseFirestore.instance.collection("tutors");
-    for (var tutorDoc in await tutorsCollection.get().then((snapshot) => snapshot.docs))
-    {
-      final tutorLat = tutorDoc.data()["lat"];
-      final tutorLng = tutorDoc.data()["lng"];
-
-      Map modifiedResponse = await getDirectionsTutorAPIResponse(
-          position!.latitude,
-          position!.longitude,
-          tutorLat,
-          tutorLng,
-          tutorDoc.data()["tutorName"]
-      );
-      print("Position: $position");
-      print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
-      print("Modified Response: $modifiedResponse");
-      print(tutorDoc.data()["tutorUID"]);
-      SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], json.encode(modifiedResponse));
-    }
-
-  }
+  //getMapboxAPI
+  // Future<void> getDirectionAPI() async
+  //  {
+  //   //get and store direction API response in sharedPreference
+  //   final tutorsCollection = FirebaseFirestore.instance.collection("tutors");
+  //   for (var tutorDoc in await tutorsCollection.get().then((snapshot) => snapshot.docs))
+  //   {
+  //     final tutorLat = tutorDoc.data()["lat"];
+  //     final tutorLng = tutorDoc.data()["lng"];
+  //
+  //     Map modifiedResponse = await getDirectionsTutorAPIResponse(
+  //         position!.latitude,
+  //         position!.longitude,
+  //         tutorLat,
+  //         tutorLng,
+  //         tutorDoc.data()["tutorName"]
+  //     );
+  //     print("Position: $position");
+  //     print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
+  //     print("Modified Response: $modifiedResponse");
+  //     print(tutorDoc.data()["tutorUID"]);
+  //     SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], json.encode(modifiedResponse));
+  //   }
+  //
+  // }
 
   Future<void> _checkLocationPermission() async {
     var status = await Permission.location.status;

@@ -20,11 +20,11 @@ separateOrderItemIDs(orderIDs)
     var pos = item.lastIndexOf(":");
     //5565757
     String getItemId = (pos != -1) ? item.substring(0, pos) : item;
-    print("This is itemID now = $getItemId");
+    print("This is OrderitemID now = $getItemId");
 
     separateItemIDsList.add(getItemId);
   }
-  print("/nThis is Items List now = ");
+  print("/nThis is OrderItems List now = ");
   print(separateItemIDsList);
 
   return separateItemIDsList;
@@ -129,6 +129,34 @@ separateItemQuantities()
   print(separateItemQuantityList);
 
   return separateItemQuantityList;
+}
+
+getQuantityNumber(String itemID, String separateItemIDsList)
+{
+  List<String> defaultItemList=[];
+  int i=1;
+  int quanNumber = 0;
+
+  defaultItemList = sharedPreferences!.getStringList("userCart")!;
+  for(i; i<defaultItemList.length;i++)
+  {
+    String item = defaultItemList[i].toString();
+    if(separateItemIDs()[i] == itemID)
+    {
+      //7
+      List<String> listItemCharacters = item.split(":").toList();
+      quanNumber = int.parse(listItemCharacters[1].toString());
+
+      print("This is Quantity Number=" + quanNumber.toString());
+    }
+    else
+    {
+      null;
+    }
+
+  }
+
+  return quanNumber;
 }
 
 clearCartNow(context)

@@ -27,7 +27,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
-  List<int>? separateItemQuantityList;
+  List<String>? separateItemIDList;
   num totalAmount = 0;
   
   @override
@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen> {
     totalAmount =0;
     Provider.of<TotalAmount>(context, listen: false).displayTotalAmount(0);
 
-    separateItemQuantityList = separateItemQuantities();
+    separateItemIDList = separateItemIDs();
   }
   @override
   Widget build(BuildContext context) {
@@ -210,11 +210,11 @@ class _CartScreenState extends State<CartScreen> {
                   if(index == 0)
                   {
                     totalAmount = 0;
-                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                    totalAmount = totalAmount + (model.price! * getQuantityNumber(model.itemID!, separateItemIDList![index]));
                   }
                   else
                   {
-                    totalAmount = totalAmount + (model.price! * separateItemQuantityList![index]);
+                    totalAmount = totalAmount + (model.price! * getQuantityNumber(model.itemID!, separateItemIDList![index]));
                   }
 
                   if(snapshot.data!.docs.length -1 == index)
@@ -228,7 +228,7 @@ class _CartScreenState extends State<CartScreen> {
                   return CartItemDesign(
                     model: model,
                     context: context,
-                    quanNumber: separateItemQuantityList![index] ,
+                    quanNumber: getQuantityNumber(model.itemID!, separateItemIDList![index]) ,
                   );
                 },
                 childCount: snapshot.hasData ? snapshot.data!.docs.length : 0,

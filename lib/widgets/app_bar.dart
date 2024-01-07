@@ -61,10 +61,10 @@ class _MyAppBarState extends State<MyAppBar> {
                Positioned(
                 child: Stack(
                   children: [
-                    const Icon(
+                     Icon(
                       Icons.brightness_1,
                       size: 20,
-                      color: Colors.green,
+                      color: Colors.lightBlue[800],
                     ),
                     Positioned(
                       top: 3,

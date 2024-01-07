@@ -53,7 +53,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Image.network(widget.model!.thumbnailUrl.toString(),height:MediaQuery.sizeOf(context).width * 0.6,fit: BoxFit.cover ,),
+            child: Image.network(widget.model!.thumbnailUrl.toString(),height:MediaQuery.sizeOf(context).width * 0.6,fit: BoxFit.fill ,),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -168,7 +168,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 child: const Center(
                   child: Text(
                     "Add to Cart",
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Poppins"),
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Poppins", fontWeight: FontWeight.bold),
                   ),
                 ),
 
