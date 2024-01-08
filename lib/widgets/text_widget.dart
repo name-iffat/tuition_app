@@ -15,7 +15,7 @@ class TextWidgetHeader extends SliverPersistentHeaderDelegate
             gradient: LinearGradient(
               colors: [
                 Colors.cyan,
-                Colors.amber,
+                Colors.blue,
               ],
               begin: const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(1.0, 0.0),

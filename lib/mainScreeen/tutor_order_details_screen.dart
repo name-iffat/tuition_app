@@ -74,7 +74,7 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "RM " + dataMap["totalAmount"].toString(),
+                        "RM " + dataMap["totalAmount"].toStringAsFixed(2),
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -102,8 +102,8 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
                   ),
                   const Divider(thickness: 4,),
                   orderStatus == "ended"
-                      ? Image.asset("images/success.png")
-                      : Image.asset("images/delivery.png"),
+                      ? Image.asset("images/success.png", height: MediaQuery.of(context).size.width * 0.5,)
+                      : Image.asset("images/delivery.png", height: MediaQuery.of(context).size.width * 0.5),
                   const Divider(thickness: 4,),
                   FutureBuilder<DocumentSnapshot>(
                     future: FirebaseFirestore.instance

@@ -48,7 +48,7 @@ class _CartScreenState extends State<CartScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -86,7 +86,7 @@ class _CartScreenState extends State<CartScreen> {
                     const Icon(
                       Icons.brightness_1,
                       size: 20,
-                      color: Colors.green,
+                      color: Colors.cyan,
                     ),
                     Positioned(
                       top: 3,
@@ -174,7 +174,7 @@ class _CartScreenState extends State<CartScreen> {
                   child: cartProvider.count == 0
                       ? Container()
                       : Text(
-                          "Total Price: ${amountProvider.tAmount.toString()}",
+                          "Total Price: ${amountProvider.tAmount.toStringAsFixed(2)}",
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -185,7 +185,7 @@ class _CartScreenState extends State<CartScreen> {
               );
             }),
           ),
-
+          SliverToBoxAdapter(child: SizedBox(height: 10,),),
           //display cart item with quantity
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance

@@ -175,10 +175,34 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               ),
             )
             : InkWell(
-              onTap: ()
+              onTap: () async
               {
-                //delete item
-                deleteItem(widget!.model!.itemID!);
+                final confirmDelete = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                        title: const Text("Confirm Deletion"),
+                        content: const Text('Are you sure you want to delete this subject?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false), // Cancel
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true), // Confirm
+                            child: const Text('Delete'),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red, // Highlight the delete action
+                            ),
+                          ),
+                        ]
+                    )
+                );
+                if(confirmDelete!)
+                {
+                  //delete item
+                  deleteItem(widget!.model!.itemID!);
+                }
+
               },
               child: Container(
                 decoration: const BoxDecoration(
@@ -198,7 +222,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 child: const Center(
                   child: Text(
                     "Delete this Subject",
-                    style: TextStyle(color: Colors.white, fontSize: 16, fontFamily: "Poppins"),
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Poppins"),
                   ),
                 ),
 

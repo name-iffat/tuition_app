@@ -22,7 +22,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget{
             gradient: LinearGradient(
               colors: [
                 Colors.cyan,
-                Colors.amber,
+                Colors.blue,
               ],
               begin: const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(1.0, 0.0),

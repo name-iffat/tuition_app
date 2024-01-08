@@ -5,6 +5,7 @@ import 'package:tuition_app/mainScreeen/earnings_tutor_screen.dart';
 import 'package:tuition_app/mainScreeen/history_tutor_screen.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/mainScreeen/not_yet_tutored_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_cancel_screen.dart';
 import 'package:tuition_app/mainScreeen/tutor_orders.dart';
 
 import '../authentication/choose_user.dart';
@@ -82,16 +83,6 @@ class MyDrawerTutor extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.reorder,color: Colors.black,),
-                  title: const Text(
-                    "New Address",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  onTap: (){
-
-                  },
-                ),
-                ListTile(
                   leading: const Icon(Icons.description,color: Colors.black,),
                   title: const Text(
                     "New Book",
@@ -99,6 +90,16 @@ class MyDrawerTutor extends StatelessWidget {
                   ),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (c)=> TutorOrdersScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.cancel,color: Colors.black,),
+                  title: const Text(
+                    "Canceled Book",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> CancelScreen()));
                   },
                 ),
                 ListTile(

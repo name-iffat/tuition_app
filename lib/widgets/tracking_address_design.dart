@@ -5,6 +5,7 @@ import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/mainScreeen/tracking_screen.dart';
 
+import '../mainScreeen/tutor_cancel_screen.dart';
 import '../models/address.dart';
 
 class TrackingAddressDesign extends StatelessWidget {
@@ -37,6 +38,35 @@ class TrackingAddressDesign extends StatelessWidget {
       getOrderID: getOrderID,
     )));
 
+  }
+
+  canceledBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId, bool popup)
+  {
+    FirebaseFirestore.instance.collection("orders")
+        .doc(getOrderID)
+        .update({
+      "status": "cancel",
+    });
+
+    //send tutor to tracking screen
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CancelScreen()));
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Hey"),
+                content: const Text("You have canceled an order."),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("OK")
+                  ),
+                ],
+              );
+            }
+        );
   }
 
   @override
@@ -89,46 +119,104 @@ class TrackingAddressDesign extends StatelessWidget {
         ),
         //GO back btn
 
-        orderStatus == "ended"
+        orderStatus == "ended" || orderStatus == "cancel"
             ? Container()
             : Visibility(
           visible: sharedPreferences!.getString("usertype")! == "Tutor",
-              child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-              child: InkWell(
-                onTap: ()
-                {
-                  UserLocation? uLocation = UserLocation();
-                  uLocation!.getCurrentLocation();
-
-                  confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.cyan,
-                          Colors.blue,
-                        ],
-                        begin: FractionalOffset(0.0, 0.0),
-                        end: FractionalOffset(1.0, 0.0),
-                        stops: [0.0,1.0],
-                        tileMode: TileMode.clamp,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: InkWell(
+                      onTap: ()
+                      async {
+                        final confirmCancel = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Confirm Cancelation"),
+                          content: const Text('Are you sure you want to cancel this tutoring?'),
+                          actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false), // Cancel
+                            child: const Text('No'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true), // Confirm
+                            child: const Text('Yes'),
+                            style: TextButton.styleFrom(
+                            foregroundColor: Colors.red, // Highlight the delete action
+                          ),
+                        ),
+                      ]
                       )
-                  ),
-                  width: MediaQuery.of(context).size.width - 40,
-                  height: 50,
-                  child: const Center(
-                    child: Text(
-                      "In Book",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                      );
+                        if(confirmCancel!)
+                        {
+                          //cancel tutoring
+                          UserLocation? uLocation = UserLocation();
+                          uLocation!.getCurrentLocation();
+
+                          canceledBookTutor(context, orderID!, tutorID!, orderByParent!, true);
+                        }
+
+                      },
+                        child: Container(
+                          decoration:  BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: 50,
+                          child: const Center(
+                            child: Text(
+                              "Cancel Book",
+                              style: TextStyle(color: Colors.blue, fontSize: 15.0,),
+                            ),
+                      ),
                     ),
                   ),
                 ),
               ),
-          ),
-        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: InkWell(
+                        onTap: ()
+                        {
+                          UserLocation? uLocation = UserLocation();
+                          uLocation!.getCurrentLocation();
+
+                          confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.cyan,
+                                  Colors.blue,
+                                ],
+                                begin: FractionalOffset(0.0, 0.0),
+                                end: FractionalOffset(1.0, 0.0),
+                                stops: [0.0,1.0],
+                                tileMode: TileMode.clamp,
+                              )
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: 50,
+                          child: const Center(
+                            child: Text(
+                              "Accept",
+                              style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
         Padding(
           padding: const EdgeInsets.all(8.0),

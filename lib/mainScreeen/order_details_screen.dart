@@ -54,7 +54,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                          "RM " + dataMap["totalAmount"].toString(),
+                          "RM " + dataMap["totalAmount"].toStringAsFixed(2),
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -65,7 +65,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                     "Order Id = " + widget.orderID!,
+                     "Order Id = ${widget.orderID!}",
                       style: const TextStyle(
                           fontSize: 16,
                       ),
@@ -74,9 +74,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Order at: " +
-                          DateFormat("dd MMMM, yyyy - hh:mn aa")
-                          .format(DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap["orderTime"]))),
+                      "Order at: ${DateFormat("dd MMMM, yyyy - hh:mn aa")
+                          .format(DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap["orderTime"])))}",
                       style: const TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ),
