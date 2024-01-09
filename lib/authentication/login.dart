@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
           Navigator.pop(context);//remove loading dialog
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
 
         }
         else{
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 if (!context.mounted) return;
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
               }
               else{
                 firebaseAuth.signOut();

@@ -183,7 +183,7 @@ class FullMapState extends State<FullMap> {
           options.add(PointAnnotationOptions(
             geometry: kTutors.center,
             image: list,
-            //iconImage: "images/LOGO.png",
+            iconImage: "images/LOGO.png",
             iconSize: 0.5,
           ));
         }

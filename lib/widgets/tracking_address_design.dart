@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/get_current_location.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/book_incoming.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/mainScreeen/tracking_screen.dart';
 
@@ -17,27 +18,46 @@ class TrackingAddressDesign extends StatelessWidget {
 
   TrackingAddressDesign({this.model, this.orderStatus, this.orderID, this.tutorID, this.orderByParent});
 
-  confirmedBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId)
+  confirmedBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId, String getStatus)
   {
-    FirebaseFirestore.instance.collection("orders")
-        .doc(getOrderID)
-        .update({
-      "status": "booking",
-      "lat":position!.latitude,
-      "lng":position!.longitude,
-      "address":completeAddress,
-    });
+    if(getStatus == "normal" || getStatus == "booking"){
+      FirebaseFirestore.instance.collection("orders")
+          .doc(getOrderID)
+          .update({
+        "status": "booking",
+        "lat":position!.latitude,
+        "lng":position!.longitude,
+        "address":completeAddress,
+      });
+      //send tutor to tracking screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TrackingScreen(
+        purchaserId: purchaserId,
+        purchaserAddress: model!.fullAddress,
+        purchaserLat: model!.lat,
+        purchaserLng: model!.lng,
+        tutorID: getTutorID,
+        getOrderID: getOrderID,
+      )));
+    }
 
-    //send tutor to tracking screen
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TrackingScreen(
-      purchaserId: purchaserId,
-      purchaserAddress: model!.fullAddress,
-      purchaserLat: model!.lat,
-      purchaserLng: model!.lng,
-      tutorID: getTutorID,
-      getOrderID: getOrderID,
-    )));
-
+    else{
+      FirebaseFirestore.instance.collection("orders")
+          .doc(getOrderID)
+          .update({
+        "status": "incoming",
+        "lat":position!.latitude,
+        "lng":position!.longitude,
+        "address":completeAddress,
+      });
+      //send tutor to tracking screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BookIncomingScreen(
+        purchaserId: purchaserId,
+        purchaserAddress: model!.fullAddress,
+        purchaserLat: model!.lat,
+        purchaserLng: model!.lng,
+        tutorId: getTutorID,
+        getOrderId: getOrderID,
+      )));    }
   }
 
   canceledBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId, bool popup)
@@ -49,7 +69,7 @@ class TrackingAddressDesign extends StatelessWidget {
     });
 
     //send tutor to tracking screen
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CancelScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CancelScreen()));
         showDialog(
             context: context,
             builder: (context) {
@@ -188,7 +208,7 @@ class TrackingAddressDesign extends StatelessWidget {
                           UserLocation? uLocation = UserLocation();
                           uLocation!.getCurrentLocation();
 
-                          confirmedBookTutor(context, orderID!, tutorID!, orderByParent!);
+                          confirmedBookTutor(context, orderID!, tutorID!, orderByParent!, orderStatus! );
                         },
                         child: Container(
                           decoration: const BoxDecoration(

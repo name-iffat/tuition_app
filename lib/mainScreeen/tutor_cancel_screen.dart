@@ -23,6 +23,8 @@ class _CancelScreenState extends State<CancelScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String userType = sharedPreferences!.getString("usertype")! ;
+    String iD = userType == "Parent" ? "orderBy" : "tutorUID";
     return SafeArea(
       child: Scaffold(
         appBar: SimpleAppBar(title: "Canceled Order",),
@@ -30,7 +32,7 @@ class _CancelScreenState extends State<CancelScreen> {
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("orders")
-                  .where("tutorUID", isEqualTo: sharedPreferences!.getString("uid"))
+                  .where(iD, isEqualTo: sharedPreferences!.getString("uid"))
                   .where("status", isEqualTo: "cancel")
                   .orderBy("orderTime", descending: true)
                   .snapshots(),

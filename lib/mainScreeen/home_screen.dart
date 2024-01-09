@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
+import 'package:tuition_app/assistantMethods/notification_service.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/models/subjects.dart';
@@ -26,6 +27,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  NotificationServices notificationServices = NotificationServices();
+
+
   bool isSelected = false;
   List<String> selectedFilters = [];
   bool isFilterVisible = false;
@@ -44,6 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
+    notificationServices.requestNotificationPermission();
+    notificationServices.isTokenRefresh();
+    notificationServices.getDeviceToken().then((value) {
+      print("Device Token:");
+      print(value);
+    });
+
+
     clearCartNow(context);
 
     UserLocation uLocation = UserLocation();
@@ -51,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getPerBookTransportAmount();
     getTransportPreviousEarnings();
     getTutorPreviousEarnings();
-    //getDirectionAPI();
+    getDirectionAPI();
     _checkLocationPermission();
   }
 
@@ -90,30 +103,30 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //getMapboxAPI
-  // Future<void> getDirectionAPI() async
-  //  {
-  //   //get and store direction API response in sharedPreference
-  //   final tutorsCollection = FirebaseFirestore.instance.collection("tutors");
-  //   for (var tutorDoc in await tutorsCollection.get().then((snapshot) => snapshot.docs))
-  //   {
-  //     final tutorLat = tutorDoc.data()["lat"];
-  //     final tutorLng = tutorDoc.data()["lng"];
-  //
-  //     Map modifiedResponse = await getDirectionsTutorAPIResponse(
-  //         position!.latitude,
-  //         position!.longitude,
-  //         tutorLat,
-  //         tutorLng,
-  //         tutorDoc.data()["tutorName"]
-  //     );
-  //     print("Position: $position");
-  //     print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
-  //     print("Modified Response: $modifiedResponse");
-  //     print(tutorDoc.data()["tutorUID"]);
-  //     SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], json.encode(modifiedResponse));
-  //   }
-  //
-  // }
+  Future<void> getDirectionAPI() async
+   {
+    //get and store direction API response in sharedPreference
+    final tutorsCollection = FirebaseFirestore.instance.collection("tutors");
+    for (var tutorDoc in await tutorsCollection.get().then((snapshot) => snapshot.docs))
+    {
+      final tutorLat = tutorDoc.data()["lat"];
+      final tutorLng = tutorDoc.data()["lng"];
+
+      Map modifiedResponse = await getDirectionsTutorAPIResponse(
+          position!.latitude,
+          position!.longitude,
+          tutorLat,
+          tutorLng,
+          tutorDoc.data()["tutorName"]
+      );
+      print("Position: $position");
+      print("Tutor Lat: $tutorLat, Tutor Lng: $tutorLng");
+      print("Modified Response: $modifiedResponse");
+      print(tutorDoc.data()["tutorUID"]);
+      SaveDirectionsTutorAPIResponse(tutorDoc.data()["tutorUID"], json.encode(modifiedResponse));
+    }
+
+  }
 
   Future<void> _checkLocationPermission() async {
     var status = await Permission.location.status;

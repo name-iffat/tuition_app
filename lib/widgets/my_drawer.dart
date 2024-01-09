@@ -5,6 +5,7 @@ import 'package:tuition_app/mainScreeen/history_screen.dart';
 import 'package:tuition_app/mainScreeen/map_parent_screen.dart';
 import 'package:tuition_app/mainScreeen/my_orders_screen.dart';
 import 'package:tuition_app/mainScreeen/search_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_cancel_screen.dart';
 
 import '../authentication/choose_user.dart';
 import '../mainScreeen/home_screen.dart';
@@ -97,6 +98,16 @@ class MyDrawer extends StatelessWidget {
                   },
                 ),
                 ListTile(
+                  leading: const Icon(Icons.cancel_outlined,color: Colors.black,),
+                  title: const Text(
+                    "Cancel Booking",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=> CancelScreen()));
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.search,color: Colors.black,),
                   title: const Text(
                     "Search",
@@ -124,7 +135,7 @@ class MyDrawer extends StatelessWidget {
                   ),
                   onTap: (){
                     firebaseAuth.signOut().then((value){
-                      Navigator.push(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
                     });
                   },
                 ),

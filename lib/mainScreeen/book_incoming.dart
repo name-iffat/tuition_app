@@ -76,7 +76,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
           });
     });
 
-    Navigator.push(context, MaterialPageRoute(builder: (c)=> HomeScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> HomeScreen()));
   }
   
   getBookTotalAmount()
@@ -191,12 +191,37 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
                         tileMode: TileMode.clamp,
                       )
                   ),
-                  width: MediaQuery.of(context).size.width - 90,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: 50,
                   child: const Center(
                     child: Text(
-                      "Im Here! Start Tutoring",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0, fontFamily: "Poppins"),
+                      "Done Tutoring",
+                      style: TextStyle(color: Colors.white, fontSize: 17.0, fontFamily: "Poppins"),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: InkWell(
+                onTap: ()
+                {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                },
+                child: Container(
+                  decoration:  BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: 50,
+                  child: const Center(
+                    child: Text(
+                      "Not Yet",
+                      style: TextStyle(color: Colors.blue, fontSize: 18.0,),
                     ),
                   ),
                 ),

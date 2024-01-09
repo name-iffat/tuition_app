@@ -105,10 +105,10 @@ class _TrackingScreenState extends State<TrackingScreen>
                 ),
                 const SizedBox(width: 7,),
 
-                Column(
+                const Column(
                   children: [
-                    const SizedBox(height: 12,),
-                    const Text(
+                    SizedBox(height: 12,),
+                    Text(
                       "Show Tutee Location",
                       style: TextStyle(
                         fontFamily: "Bebas",
@@ -154,11 +154,11 @@ class _TrackingScreenState extends State<TrackingScreen>
                         tileMode: TileMode.clamp,
                       )
                   ),
-                  width: MediaQuery.of(context).size.width - 90,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: 50,
                   child: const Center(
                     child: Text(
-                      "Confirmed",
+                      "Im Here, Lets Tutoring!",
                       style: TextStyle(color: Colors.white, fontSize: 15.0, fontFamily: "Poppins"),
                     ),
                   ),
@@ -172,27 +172,19 @@ class _TrackingScreenState extends State<TrackingScreen>
               child: InkWell(
                 onTap: ()
                 {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                 },
                 child: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.cyan,
-                          Colors.blue,
-                        ],
-                        begin: FractionalOffset(0.0, 0.0),
-                        end: FractionalOffset(1.0, 0.0),
-                        stops: [0.0,1.0],
-                        tileMode: TileMode.clamp,
-                      )
+                  decoration:  BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+
                   ),
                   width: MediaQuery.of(context).size.width - 90,
                   height: 50,
                   child: const Center(
                     child: Text(
                       "Go Back",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0,),
+                      style: TextStyle(color: Colors.blue, fontSize: 18.0,),
                     ),
                   ),
                 ),
