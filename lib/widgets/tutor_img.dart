@@ -39,7 +39,7 @@ class _TutorImgState extends State<TutorImg> {
       tutorName = snap.data()!["tutorName"].toString();
       phone = snap.data()!["phone"].toString();
       email = snap.data()!["tutorEmail"].toString();
-      rating = snap.data()!["rating"].toStringAsFixed(2);
+      rating = snap.data()!["rating"].toStringAsFixed(1);
       setState(() {
         tutorAvatarUrl = tutorAvatarUrl;
         tutorName = tutorName;

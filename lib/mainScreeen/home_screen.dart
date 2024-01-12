@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    height: 200,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     aspectRatio: 16/9,
                     viewportFraction: 0.8,
                     initialPage: 0,

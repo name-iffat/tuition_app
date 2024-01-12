@@ -449,17 +449,17 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
                           ),
                           //child: const Text("Submit Rating"),
                         ),
-                        FutureBuilder<num>(
-                          future: getAverageRating(widget.tutorID!),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              num average = snapshot.data!;
-                              return Text("Average Rating: $average");
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                        )
+                        // FutureBuilder<num>(
+                        //   future: getAverageRating(widget.tutorID!),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.hasData) {
+                        //       num average = snapshot.data!;
+                        //       return Text("Average Rating: $average");
+                        //     } else {
+                        //       return CircularProgressIndicator();
+                        //     }
+                        //   },
+                        // )
                        // Text("Average Rating: ${getAverageRating(widget.tutorID!).toString()}"),
                       ]
                   ),
