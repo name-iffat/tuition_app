@@ -15,6 +15,8 @@ String previousEarnings =''; //tutoring old earnings
 String previousTransportEarnings =""; //tutor transporting old earnings
 String previousTutorEarnings="";
 
+num averageRating = 0.0;
+
 num distance = 0;
 num duration = 0;
 

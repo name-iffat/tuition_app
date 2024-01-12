@@ -31,15 +31,19 @@ class BookIncomingScreen extends StatefulWidget
 
 class _BookIncomingScreenState extends State<BookIncomingScreen>
 {
+  String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
+
   String orderTotalAmount = "";
   confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
   {
+    previousTransportEarnings = previousTransportEarnings == "null" ? "0" : previousTransportEarnings;
     String transportNewTotalEarningAmount = (double.parse(previousTransportEarnings) + double.parse(perBookTransportAmount)).toString();
 
     FirebaseFirestore.instance
         .collection("orders")
         .doc(getOrderId)
         .update({
+      "rated": false,
       "status": "ended",
       "address": completeAddress,
       "lat": position!.latitude,
@@ -52,6 +56,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
           .doc(sharedPreferences!.getString("uid"))
           .update(
           {
+            "rating": 0,
             "transport": transportNewTotalEarningAmount, //total earnings of tutor transporting
           });
     }).then((value)
@@ -71,9 +76,22 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
           .collection("orders")
           .doc(getOrderId).update(
           {
+            "rated": false,
             "status":"ended",
             "tutorUID": sharedPreferences!.getString("uid"),
           });
+    }).then((value)
+    {
+      final ref = FirebaseFirestore.instance
+          .collection("tutors")
+          .doc(sharedPreferences!.getString("uid"))
+          .collection("rating");
+      ref.doc(getOrderId).set({
+        "rateID" : getOrderId,
+        "tutorUID" : sharedPreferences!.getString("uid"),
+        "rating" : 0,
+        "publishedDate" : DateTime.now(),
+      });
     });
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> HomeScreen()));

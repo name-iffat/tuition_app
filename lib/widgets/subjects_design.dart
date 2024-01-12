@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/shared_prefs.dart';
 import 'package:tuition_app/mainScreeen/items_screen_parent.dart';
@@ -20,7 +21,25 @@ class SubjectsDesignWidget extends StatefulWidget {
 }
 
 class _SubjectsDesignWidgetState extends State<SubjectsDesignWidget> {
+  String rating = "";
 
+  getTutorInfo()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(widget.subjectsModel.tutorUID!)
+        .get().then((DocumentSnapshot)
+    {
+      rating = DocumentSnapshot.data()!['rating'].toString() == "null" ? "0" : DocumentSnapshot.data()!['rating'].toString();
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTutorInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,16 +104,16 @@ class _SubjectsDesignWidgetState extends State<SubjectsDesignWidget> {
 
                                   ),
                                 ),
-                                const Row(
+                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.star_rate,
                                       color: Colors.amber,
                                       size: 15,
                                     ),
                                     Text(
-                                      "4.5",
-                                      style: TextStyle(
+                                      rating,
+                                      style: const TextStyle(
                                         color: Colors.amber,
                                         fontSize: 15,
                                         fontFamily: "Poppins",

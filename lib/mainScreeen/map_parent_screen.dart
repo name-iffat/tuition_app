@@ -103,7 +103,7 @@ class FullMapState extends State<FullMap> {
     final ByteData bytes =
     await rootBundle.load("images/LOGO.png");
     final Uint8List list = bytes.buffer.asUint8List();
-    await PointAnnotation(
+    PointAnnotation(
       iconImage: "images/LOGO.png",
       iconSize: 1.0, id: 'marker',
     );

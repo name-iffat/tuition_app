@@ -70,18 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getTransportPreviousEarnings()
   {
+
     FirebaseFirestore.instance
         .collection("tutors")
         .doc(sharedPreferences!.getString("uid"))
         .get().then((snap)
     {
-      previousTransportEarnings = snap.data()!["transport"].toString();
+      previousTransportEarnings = snap.data()!["transport"].toString() == "null" ? "0" : previousTransportEarnings;
+      //previousTransportEarnings = previousTransportEarnings == "null" ? "0" : previousTransportEarnings;
+      print("chk: $previousTransportEarnings");
     });
   }
 
   getTutorPreviousEarnings()
-  {
-    FirebaseFirestore.instance
+  {    previousTutorEarnings = previousTutorEarnings == "null" ? "0" : previousTutorEarnings;
+
+  FirebaseFirestore.instance
         .collection("tutors")
         .doc(sharedPreferences!.getString("uid"))
         .get().then((snap)

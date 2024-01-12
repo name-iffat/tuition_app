@@ -19,8 +19,29 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-
   String orderStatus = "";
+  String orderByParent = "";
+  String tutorUID = "";
+
+  getOrderInfo()
+  {
+    FirebaseFirestore.instance
+        .collection("orders")
+        .doc(widget.orderID).get().then((documentSnapshot)
+    {
+      orderStatus = documentSnapshot.data()!['status'].toString();
+      orderByParent = documentSnapshot.data()!['orderBy'].toString();
+      tutorUID = documentSnapshot.data()!['tutorUID'].toString();
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getOrderInfo();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +102,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                   const Divider(thickness: 4,),
                   orderStatus == "ended"
-                      ? Image.asset("images/tutorlogin.png")
+                      ? Image.asset(
+                      "images/tutorlogin.png",
+                      height: MediaQuery.of(context).size.height * 0.3,
+                  )
                       : Image.asset("images/delivery.png"),
                   const Divider(thickness: 4,),
                   FutureBuilder<DocumentSnapshot>(
@@ -98,7 +122,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               model: Address.fromJson(
                                 snapshot.data!.data()! as Map<String, dynamic>
                               ),
-                            )
+                        orderStatus: orderStatus,
+                        orderID: widget.orderID,
+                        tutorID:tutorUID,
+                        orderByParent: orderByParent,
+
+                      )
                           : Center(child: circularProgress(),);
                     },
                   ),

@@ -6,6 +6,7 @@ class Tutors
   String? tutorEmail;
   double? lat;
   double? lng;
+  double? rating;
 
   Tutors({
     this.tutorUID,
@@ -14,6 +15,7 @@ class Tutors
     this.tutorEmail,
     this.lat ,
     this.lng,
+    this.rating,
 });
 
   Tutors.fromJson(Map<String, dynamic> json)
@@ -24,6 +26,7 @@ class Tutors
     tutorEmail = json["tutorEmail"];
     lat = json["lat"];
     lng = json["lng"];
+    rating = json["rating"];
   }
 
   Map<String, dynamic> toJson()
@@ -35,6 +38,7 @@ class Tutors
     data["tutorEmail"] = this.tutorEmail;
     data["lat"] = this.lat;
     data["lng"] = this.lng;
+    data["rating"] = this.rating;
     return data;
   }
 }

@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (c)=> TotalAmount()),
         ChangeNotifierProvider(create: (c)=> AddressChanger()),
 
+
       ],
       child: MaterialApp(
         title: 'Tuition App',
