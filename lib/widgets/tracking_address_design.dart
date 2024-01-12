@@ -27,6 +27,8 @@ class TrackingAddressDesign extends StatefulWidget {
 class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
   double _currentRating = 3.5; // Initial value, will be updated from Firebase
   final _ratingsRef = FirebaseFirestore.instance.collection('tutors');
+  String rated = "false ";
+
 
   confirmedBookTutor(BuildContext context, String getOrderID, getTutorID, String purchaserId, String getStatus)
   {
@@ -124,13 +126,29 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
     try
     {
       FirebaseFirestore.instance
-          .collection("tutors")
-          .doc(tutorID)
-          .collection("rating")
+          .collection("orders")
           .doc(getOrderID)
           .update({
         "rated": true,
-        "rating": _currentRating,
+      }).then((value) {
+        FirebaseFirestore.instance
+            .collection("tutors")
+            .doc(tutorID)
+            .collection("rating")
+            .doc(getOrderID)
+            .update({
+          "rated": true,
+          "rating": _currentRating,
+        });
+      }).then((value) {
+        FirebaseFirestore.instance
+            .collection("parent")
+            .doc(widget.orderByParent)
+            .collection("orders")
+            .doc(getOrderID)
+            .update({
+          "rated": true,
+        });
       }).then((value)
       async {
         FirebaseFirestore.instance
@@ -173,6 +191,26 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
 
     return averageRating;
   }
+  getOrderInfo()
+  {
+    FirebaseFirestore.instance
+        .collection("tutors")
+        .doc(widget.tutorID!).collection("rating")
+        .doc(widget.orderID!)
+        .get().then((DocumentSnapshot)
+    {
+      rated = DocumentSnapshot.data()!['rated'].toString() == "null" ? "0" : DocumentSnapshot.data()!['rated'].toString();
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getOrderInfo();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -357,48 +395,74 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
             ),
           ),
         ),
-        sharedPreferences!.getString("usertype")! == "Parent" ? Padding(padding: const EdgeInsets.all(8.0)
-            ,child: Center(
-                child:Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RatingBar.builder(
-                        initialRating: _currentRating ,
-                        minRating: 1,
-                        maxRating: 5,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _)=> const Icon(
-                          Icons.star,
-                          color: Colors.amber,
+        sharedPreferences!.getString("usertype")! == "Parent" ? Padding(padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child:Visibility(
+                  visible: rated == "false" ? true : false ,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RatingBar.builder(
+                          initialRating: _currentRating ,
+                          minRating: 1,
+                          maxRating: 5,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _)=> const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating)
+                          {
+                            setState(() {
+                              _currentRating = rating;
+                            });
+                          },
                         ),
-                        onRatingUpdate: (rating)
-                        {
-                          setState(() {
-                            _currentRating = rating;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 10,),
-                      ElevatedButton(
-                        onPressed: _submitRating(widget.tutorID!, widget.orderID!), // Submit rating
-                        child: const Text("Submit Rating"),
-                      ),
-                      FutureBuilder<num>(
-                        future: getAverageRating(widget.tutorID!),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            num average = snapshot.data!;
-                            return Text("Average Rating: $average");
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      )
-                     // Text("Average Rating: ${getAverageRating(widget.tutorID!).toString()}"),
-                    ]
+                        const SizedBox(height: 10,),
+                        ElevatedButton.icon(
+                          onPressed:(){
+                            _submitRating(widget.tutorID!, widget.orderID!);
+                          }, // Submit rating
+                          label: const Text(
+                            "Submit Rating",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.2,
+                                vertical: 15,
+                            ),
+                            side: const BorderSide(width: 1, color: Colors.blue),
+                          ),
+                          //child: const Text("Submit Rating"),
+                        ),
+                        FutureBuilder<num>(
+                          future: getAverageRating(widget.tutorID!),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              num average = snapshot.data!;
+                              return Text("Average Rating: $average");
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
+                       // Text("Average Rating: ${getAverageRating(widget.tutorID!).toString()}"),
+                      ]
+                  ),
                 )
             )) : Container(),
       ],

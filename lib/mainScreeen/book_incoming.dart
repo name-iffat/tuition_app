@@ -36,7 +36,14 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
   String orderTotalAmount = "";
   confirmStartTutor(getOrderId,tutorId, purchaserId,purchaserAddress, purchaserLat, purchaserLng )
   {
-    previousTransportEarnings = previousTransportEarnings == "null" ? "0" : previousTransportEarnings;
+    if(previousTransportEarnings == "null" || previousTransportEarnings == "")
+    {
+      previousTransportEarnings = "0";
+    }
+    else
+    {
+      previousTransportEarnings = previousTransportEarnings;
+    }
     String transportNewTotalEarningAmount = (double.parse(previousTransportEarnings) + double.parse(perBookTransportAmount)).toString();
 
     FirebaseFirestore.instance
@@ -90,6 +97,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
         "rateID" : getOrderId,
         "tutorUID" : sharedPreferences!.getString("uid"),
         "rating" : 0,
+        "rated" : false,
         "publishedDate" : DateTime.now(),
       });
     });

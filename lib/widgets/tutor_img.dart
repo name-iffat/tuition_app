@@ -22,6 +22,7 @@ class _TutorImgState extends State<TutorImg> {
 
   String skeletonImg = "https://cdn.discordapp.com/attachments/1186076047872110712/1192522621678534716/image.png?ex=65a9623d&is=6596ed3d&hm=ed7c4b2dcda7bc3cc27f342fe91fbfb3685d475a16820e3425ee486e2aa211f8&";
 
+  String rating = "";
 
   @override
   initState() {
@@ -38,11 +39,13 @@ class _TutorImgState extends State<TutorImg> {
       tutorName = snap.data()!["tutorName"].toString();
       phone = snap.data()!["phone"].toString();
       email = snap.data()!["tutorEmail"].toString();
+      rating = snap.data()!["rating"].toStringAsFixed(2);
       setState(() {
         tutorAvatarUrl = tutorAvatarUrl;
         tutorName = tutorName;
         phone = phone;
         email = email;
+        rating = rating;
       });
     });
   }
@@ -51,7 +54,7 @@ Widget _buildTextIcon(IconData icon,Color color, String text) {
   return  Row(
       children: [
         Icon(icon, color: color, size: 25,),
-        Text(text, style: TextStyle(fontSize: 16, fontFamily: "Poppins")),
+        Text(text, style: const TextStyle(fontSize: 16, fontFamily: "Poppins")),
       ],
     );
 
@@ -134,33 +137,31 @@ Widget _buildTextIcon(IconData icon,Color color, String text) {
         ],
           ),
         ),
-        Container(
-          child: Column(
-            children: [
-              Text(
-                tutorName ?? "Tutor",
-                style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildTextIcon(Icons.email_outlined, Colors.blueAccent, email ?? ""),
-                  _buildTextIcon(Icons.phone_outlined, Colors.blueAccent, phone ?? ""),
-                ],
-              ),
-              const SizedBox(height: 5,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildTextIcon(Icons.location_on_outlined, Colors.cyan, "${distance.toStringAsFixed(2)}kms"),
-                  const Text("|"),
-                  _buildTextIcon(Icons.star_outline, Colors.amber, "4.5"),
-                  const Text("|"),
-                  _buildTextIcon(Icons.access_time, Colors.cyan, "${duration.toStringAsFixed(2)}mins"),
-                ],
-              ),
-            ],
-          ),
+        Column(
+          children: [
+            Text(
+              tutorName ?? "Tutor",
+              style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildTextIcon(Icons.email_outlined, Colors.blueAccent, email ?? ""),
+                _buildTextIcon(Icons.phone_outlined, Colors.blueAccent, phone ?? ""),
+              ],
+            ),
+            const SizedBox(height: 5,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildTextIcon(Icons.location_on_outlined, Colors.cyan, "${distance.toStringAsFixed(2)}kms"),
+                const Text("|"),
+                _buildTextIcon(Icons.star_outline, Colors.amber, rating),
+                const Text("|"),
+                _buildTextIcon(Icons.access_time, Colors.cyan, "${duration.toStringAsFixed(2)}mins"),
+              ],
+            ),
+          ],
         ),
       ],
     );

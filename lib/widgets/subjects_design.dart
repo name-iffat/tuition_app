@@ -30,7 +30,7 @@ class _SubjectsDesignWidgetState extends State<SubjectsDesignWidget> {
         .doc(widget.subjectsModel.tutorUID!)
         .get().then((DocumentSnapshot)
     {
-      rating = DocumentSnapshot.data()!['rating'].toString() == "null" ? "0" : DocumentSnapshot.data()!['rating'].toString();
+      rating = DocumentSnapshot.data()!['rating'].toStringAsFixed(2) == "null" ? "0" : DocumentSnapshot.data()!['rating'].toStringAsFixed(2);
 
     });
   }
