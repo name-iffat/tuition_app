@@ -44,8 +44,6 @@ class _CarouselCardState extends State<CarouselCard> {
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text(distance.toStringAsFixed(2),
-                      overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 5),
                   Text(
                     '${distance.toStringAsFixed(2)}kms, ${duration.toStringAsFixed(2)} mins',

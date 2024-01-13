@@ -6,7 +6,7 @@ class Tutors
   String? tutorEmail;
   double? lat;
   double? lng;
-  double? rating;
+  num? rating;
 
   Tutors({
     this.tutorUID,
