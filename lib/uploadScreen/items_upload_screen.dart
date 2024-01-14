@@ -21,11 +21,12 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
 
-  TextEditingController shortInfoController = TextEditingController();
+  //TextEditingController shortInfoController = TextEditingController();
+  String selectedForm = "";
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-
+  final List<String> forms = ["Form 1", "Form 2", "Form 3", "Form 4", "Form 5"];
 
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -40,7 +41,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -105,7 +106,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         builder: (context)
         {
           return SimpleDialog(
-            title: const Text("Subject image",style: TextStyle(color: Colors.amber,fontWeight:FontWeight.bold ),),
+            title: const Text("Subject image",style: TextStyle(color: Colors.cyan,fontWeight:FontWeight.bold ),),
             children: [
               SimpleDialogOption(
                 child: const Text(
@@ -171,7 +172,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -199,8 +200,8 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             child: const Text(
               "Add",
               style: TextStyle(
-                  color: Colors.cyan,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
                   fontSize: 18,
                   fontFamily: "Bebas"
               ),
@@ -251,19 +252,27 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
             thickness: 1,
           ),
           ListTile(
-            leading: const Icon(Icons.perm_device_information, color: Colors.cyan,),
-            title: Container(
-              width: 250,
-              child: TextField(
-                style: const TextStyle(color: Colors.black),
-                controller:  shortInfoController,
-                decoration: const InputDecoration(
-                  hintText: "item info",
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                ),
-              ),
+            leading: const Icon(Icons.school, color: Colors.cyan,),
+            title:Wrap(
+              children: [
+                for (String form in forms)
+
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: ChoiceChip(
+                      selectedColor: Colors.cyan,
+                      label: Text(form, style: TextStyle(color: Colors.white),),
+                      selected: selectedForm == form,
+                      onSelected: (selected) {
+                        setState(() {
+                          selectedForm = selected ? form : "";
+                        });
+                      },
+                    ),
+                  ),
+              ],
             ),
+
           ),
           const Divider(
             color: Colors.lightBlue,
@@ -297,7 +306,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
                 style: const TextStyle(color: Colors.black),
                 controller:  priceController,
                 decoration: const InputDecoration(
-                  hintText: "price",
+                  hintText: "price per session",
                   hintStyle: TextStyle(color: Colors.grey),
                   border: InputBorder.none,
                 ),
@@ -318,7 +327,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   clearSubjectUploadForm()
   {
     setState(() {
-      shortInfoController.clear();
+      selectedForm = "";
       titleController.clear();
       priceController.clear();
       descriptionController.clear();
@@ -330,7 +339,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
   {
     if(imageXFile !=null)
     {
-      if(shortInfoController.text.isNotEmpty && titleController.text.isNotEmpty && descriptionController.text.isNotEmpty && priceController.text.isNotEmpty)
+      if(selectedForm.isNotEmpty && titleController.text.isNotEmpty && descriptionController.text.isNotEmpty && priceController.text.isNotEmpty)
       {
         setState(() {
           uploading = true;
@@ -382,7 +391,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
       "subjectID" : widget.model!.subjectID,
       "tutorUID" : sharedPreferences!.getString("uid"),
       "tutorName" : sharedPreferences!.getString("name"),
-      "shortInfo" : shortInfoController.text.toString(),
+      "shortInfo" : selectedForm.toString(),
       "longDescription" : descriptionController.text.toString(),
       "price" : int.parse(priceController.text),
       "title" : titleController.text.toString(),
@@ -399,7 +408,7 @@ class _ItemsUploadScreenState extends State<ItemsUploadScreen> {
         "subjectID" : widget.model!.subjectID,
         "tutorUID" : sharedPreferences!.getString("uid"),
         "tutorName" : sharedPreferences!.getString("name"),
-        "shortInfo" : shortInfoController.text.toString(),
+        "shortInfo" : selectedForm.toString(),
         "longDescription" : descriptionController.text.toString(),
         "price" : int.parse(priceController.text),
         "title" : titleController.text.toString(),

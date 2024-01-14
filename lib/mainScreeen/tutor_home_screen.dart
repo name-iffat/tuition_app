@@ -21,7 +21,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "My Subjects")),
+        SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "My Collections")),
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("tutors")

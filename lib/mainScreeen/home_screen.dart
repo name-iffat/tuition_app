@@ -368,8 +368,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
+            stream: selectedFilters.isEmpty || selectedFilters.contains("All")
+            ? FirebaseFirestore.instance
                 .collection("subjects")
+                .snapshots()
+            : FirebaseFirestore.instance
+                .collection("subjects")
+                .where("locality", arrayContainsAny: selectedFilters)
                 .snapshots(),
             builder: (context, snapshot)
             {

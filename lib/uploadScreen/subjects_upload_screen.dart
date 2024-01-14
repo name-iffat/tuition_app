@@ -25,10 +25,8 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
-  // Checkbox state variables
-  bool _tapahChecked = false;
-  bool _kamparChecked = false;
-  bool _bidorChecked = false;
+  // locality state variables
+  List<String> selectedFilters = [];
 
   defaultScreen()
   {
@@ -39,7 +37,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -49,7 +47,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
           ),
         ),
         title: const Text(
-          "Add Subject",
+          "Add Collection",
           style: TextStyle(fontSize: 30, fontFamily: "Bebas"),
         ),
         centerTitle: true,
@@ -71,7 +69,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
               Icon(Icons.my_library_books, color: Colors.grey, size: 200,),
               ElevatedButton(
                 child: Text(
-                  "Add Your Subject",
+                  "Add Your Collections",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -104,7 +102,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
           builder: (context)
             {
               return SimpleDialog(
-                title: const Text("Subject image",style: TextStyle(color: Colors.amber,fontWeight:FontWeight.bold ),),
+                title: const Text("Collection image",style: TextStyle(color: Colors.blue,fontWeight:FontWeight.bold ),),
                 children: [
                   SimpleDialogOption(
                     child: const Text(
@@ -160,6 +158,25 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
       imageXFile;
     });
   }
+  void _handleFilterSelection(String value, bool selected) {
+    setState(() {
+      if (value == "All") {
+        if (selected) {
+          selectedFilters.clear(); // Clear all other selections if All is selected
+        } else {
+          selectedFilters.add(value);
+          // Do nothing if All is deselected (other selections remain)
+        }
+      } else { // For other chips
+        if (selected) {
+          selectedFilters.add(value);
+        } else {
+          selectedFilters.remove(value);
+        }
+      }
+      // Apply filtering logic based on selectedFilters
+    });
+  }
 
   SubjectUploadScreen()
   {
@@ -170,7 +187,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
               gradient: LinearGradient(
                 colors: [
                   Colors.cyan,
-                  Colors.amber,
+                  Colors.blue,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
@@ -180,7 +197,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
           ),
         ),
         title: const Text(
-          "Add Subject",
+          "Add Collection",
           style: TextStyle(fontSize: 30, fontFamily: "Bebas"),
         ),
         centerTitle: true,
@@ -198,8 +215,8 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
             child: const Text(
               "Add",
               style: TextStyle(
-                color: Colors.cyan,
-                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
                 fontSize: 18,
                 fontFamily: "Bebas"
               ),
@@ -264,27 +281,41 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
               ),
             ),
           ),
-          ListTile(
-          title: Text("Tapah"),
-          leading: Checkbox(
-          value: _tapahChecked,
-          onChanged: (value) => setState(() => _tapahChecked = value!),
-          ),
-          ),
-          ListTile(
-          title: Text("Kampar"),
-            leading: Checkbox(
-            value: _kamparChecked,
-            onChanged: (value) => setState(() => _kamparChecked = value!),
-          ),
-          ),
-          ListTile(
-            title: Text("Bidor"),
-            leading: Checkbox(
-          value: _bidorChecked,
-          onChanged: (value) => setState(() => _bidorChecked = value!),
-          ),
-          ),
+              ListTile(
+                leading: const Icon(Icons.location_on, color: Colors.cyan,),
+                title: Wrap(
+                  children: [
+                    FilterChip(
+                      label: const Text("All", style: TextStyle(color: Colors.white)),
+                      selected: selectedFilters.contains("All"),
+                      selectedColor: selectedFilters.contains("All") ? Colors.lightGreen : Colors.lightBlueAccent, // Change color based on "All" selection, // Change color based on "All" selection
+                      checkmarkColor: selectedFilters.contains("All") ? Colors.white : Colors.white,
+                      onSelected: (selected) => _handleFilterSelection("All", selected),
+                    ),
+                    FilterChip(
+                      label: const Text("Tapah", style: TextStyle(color: Colors.white)),
+                      selected: selectedFilters.contains("Tapah"),
+                      selectedColor: Colors.lightBlueAccent,
+                      checkmarkColor: Colors.white,
+                      onSelected: (selected) => _handleFilterSelection("Tapah", selected),
+                    ),
+                    FilterChip(
+                      label: const Text("Bidor", style: TextStyle(color: Colors.white)),
+                      selected: selectedFilters.contains("Bidor"),
+                      selectedColor: Colors.lightBlueAccent,
+                      checkmarkColor: Colors.white,
+                      onSelected: (selected) => _handleFilterSelection("Bidor", selected),
+                    ),
+                    FilterChip(
+                      label: const Text("Kampar", style: TextStyle(color: Colors.white)),
+                      selected: selectedFilters.contains("Kampar"),
+                      selectedColor: Colors.lightBlueAccent,
+                      checkmarkColor: Colors.white,
+                      onSelected: (selected) => _handleFilterSelection("Kampar", selected),
+                    ),
+                  ],
+                ),
+              ),
         ],
       ),
     );
@@ -356,9 +387,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
       "publishedDate" : DateTime.now(),
       "status" : "available",
       "thumbnailUrl" : downloadUrl,
-      'tapahChecked': _tapahChecked,
-      'kamparChecked': _kamparChecked,
-      'bidorChecked': _bidorChecked,
+      "locality" : selectedFilters,
     }).then((value) {
       final SubjectRef = FirebaseFirestore.instance
           .collection("subjects");
@@ -371,9 +400,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
         "publishedDate": DateTime.now(),
         "status": "available",
         "thumbnailUrl": downloadUrl,
-        'tapahChecked': _tapahChecked,
-        'kamparChecked': _kamparChecked,
-        'bidorChecked': _bidorChecked,
+        "locality": selectedFilters,
       });
     }).then((value)
     {

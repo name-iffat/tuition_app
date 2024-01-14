@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String parentImageUrl = "";
   String completeAddress ="";
+  String locality = "";
 
   Future<void> _getImage() async
   {
@@ -64,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Placemark pMark = placeMark![0];
 
     completeAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}, ${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}, ${pMark.country}';
-
+    locality = pMark.locality.toString();
     locationController.text = completeAddress;
     print(locationController);
   }
@@ -195,6 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "parentAvatarUrl" : parentImageUrl,
       "phone" : phoneController.text.trim(),
       "address" : completeAddress,
+      "locality" : locality,
       "status" : "approved",
       "earnings" : 0.0,
       "lat" : position!.latitude,
@@ -212,8 +214,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "tutorAvatarUrl" : parentImageUrl,
           "phone" : phoneController.text.trim(),
           "address" : completeAddress,
+          "locality" : locality,
           "status" : "approved",
           "earnings" : 0.0,
+          "rating" : 0.0,
           "lat" : position!.latitude,
           "lng" : position!.longitude,
           "userType" : "Tutor"
@@ -296,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: locationController,
                     hintText: (widget.userType == "Parent") ? "Home Location" : "My Location",
                     isObsecre: false,
-                    enabled: false,
+                    enabled: true,
                   ),
                   Container(
                     width: 400,
