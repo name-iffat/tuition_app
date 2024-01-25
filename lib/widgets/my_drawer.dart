@@ -135,6 +135,7 @@ class MyDrawer extends StatelessWidget {
                   ),
                   onTap: (){
                     firebaseAuth.signOut().then((value){
+                      Navigator.pop(context);
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const ChooseUser()));
                     });
                   },

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
@@ -217,190 +218,202 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     String userType = sharedPreferences!.getString("usertype")! ;
     //getDirectionAPI();
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.cyan,
-                  Colors.blue,
-                ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
+    return WillPopScope(
+      onWillPop: () async{
+        if(firebaseAuth.currentUser != null)
+        {
+          SystemNavigator.pop(); // Exit app on Android
+          return false;
+        }
+        else{
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.cyan,
+                    Colors.blue,
+                  ],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0,1.0],
+                  tileMode: TileMode.clamp,
+                )
+            ),
           ),
-        ),
-        title: Text(
-          sharedPreferences!.getString("name")!,
-          style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
-        ),
-        centerTitle: true,
-        actions: userType == "Tutor"
-        ? [
-          IconButton(
-            icon: const Icon(Icons.post_add, color: Colors.white,),
-            onPressed: ()
-            {
-              Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
-            },
+          title: Text(
+            sharedPreferences!.getString("name")!,
+            style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
           ),
-        ] : null,
-      ),
-      drawer: userType == "Parent" ? MyDrawer() : MyDrawerTutor(),
-      body: userType == "Parent"
-          ? CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height * .3 ,
-                width: MediaQuery.of(context).size.width,
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    aspectRatio: 16/9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 6),
-                    autoPlayAnimationDuration: Duration(milliseconds: 600),
-                    autoPlayCurve: Curves.linear,
-                    enlargeCenterPage: true,
-                    enlargeFactor: 0.3,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                  items: items.map((index) {
-                    return Builder(builder: (BuildContext context){
-                      return Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
-                        decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.cyan,
-                                Colors.blue,
-                              ],
-                              begin: const FractionalOffset(0.0, 0.0),
-                              end: const FractionalOffset(1.0, 0.0),
-                              stops: [0.0,1.0],
-                              tileMode: TileMode.clamp,
-                            ),
-                          // color: Colors.lightBlue,
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                            child: Image.asset(
-                              index,
-                              fit: BoxFit.fill,
-                            ),
+          centerTitle: true,
+          actions: userType == "Tutor"
+          ? [
+            IconButton(
+              icon: const Icon(Icons.post_add, color: Colors.white,),
+              onPressed: ()
+              {
+                Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
+              },
+            ),
+          ] : null,
+        ),
+        drawer: userType == "Parent" ? MyDrawer() : MyDrawerTutor(),
+        body: userType == "Parent"
+            ? CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .3 ,
+                  width: MediaQuery.of(context).size.width,
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      aspectRatio: 16/9,
+                      viewportFraction: 0.8,
+                      initialPage: 0,
+                      enableInfiniteScroll: true,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 6),
+                      autoPlayAnimationDuration: Duration(milliseconds: 600),
+                      autoPlayCurve: Curves.linear,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.3,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                    items: items.map((index) {
+                      return Builder(builder: (BuildContext context){
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.cyan,
+                                  Colors.blue,
+                                ],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0,1.0],
+                                tileMode: TileMode.clamp,
+                              ),
+                            // color: Colors.lightBlue,
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                      );
-                    });
-                  }).toList(),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                              child: Image.asset(
+                                index,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                        );
+                      });
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
-          ),
-           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left:10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    const Text(
-                      "Subjects",
-                      style: TextStyle(
-                        color: Colors.cyan,
-                        fontSize: 30,
-                        fontFamily: "Bebas",
+             SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left:10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      const Text(
+                        "Subjects",
+                        style: TextStyle(
+                          color: Colors.cyan,
+                          fontSize: 30,
+                          fontFamily: "Bebas",
+                        ),
+                      ),
+                    ElevatedButton(
+                        onPressed: () => setState(() => isFilterVisible = !isFilterVisible),
+                        child: const Text("Filter"),
+                    ),
+                    Visibility(
+                      visible: isFilterVisible,
+                      child: Wrap(
+                        children: [
+                          FilterChip(
+                            label: const Text("All", style: TextStyle(color: Colors.white)),
+                            selected: selectedFilters.contains("All"),
+                            selectedColor: selectedFilters.contains("All") ? Colors.lightGreen : Colors.lightBlueAccent, // Change color based on "All" selection, // Change color based on "All" selection
+                            checkmarkColor: selectedFilters.contains("All") ? Colors.white : Colors.white,
+                            onSelected: (selected) => _handleFilterSelection("All", selected),
+                          ),
+                          FilterChip(
+                            label: const Text("Tapah", style: TextStyle(color: Colors.white)),
+                            selected: selectedFilters.contains("Tapah"),
+                            selectedColor: Colors.lightBlueAccent,
+                            checkmarkColor: Colors.white,
+                            onSelected: (selected) => _handleFilterSelection("Tapah", selected),
+                          ),
+                          FilterChip(
+                            label: const Text("Bidor", style: TextStyle(color: Colors.white)),
+                            selected: selectedFilters.contains("Bidor"),
+                            selectedColor: Colors.lightBlueAccent,
+                            checkmarkColor: Colors.white,
+                            onSelected: (selected) => _handleFilterSelection("Bidor", selected),
+                          ),
+                          FilterChip(
+                            label: const Text("Kampar", style: TextStyle(color: Colors.white)),
+                            selected: selectedFilters.contains("Kampar"),
+                            selectedColor: Colors.lightBlueAccent,
+                            checkmarkColor: Colors.white,
+                            onSelected: (selected) => _handleFilterSelection("Kampar", selected),
+                          ),
+                        ],
                       ),
                     ),
-                  ElevatedButton(
-                      onPressed: () => setState(() => isFilterVisible = !isFilterVisible),
-                      child: const Text("Filter"),
-                  ),
-                  Visibility(
-                    visible: isFilterVisible,
-                    child: Wrap(
-                      children: [
-                        FilterChip(
-                          label: const Text("All", style: TextStyle(color: Colors.white)),
-                          selected: selectedFilters.contains("All"),
-                          selectedColor: selectedFilters.contains("All") ? Colors.lightGreen : Colors.lightBlueAccent, // Change color based on "All" selection, // Change color based on "All" selection
-                          checkmarkColor: selectedFilters.contains("All") ? Colors.white : Colors.white,
-                          onSelected: (selected) => _handleFilterSelection("All", selected),
-                        ),
-                        FilterChip(
-                          label: const Text("Tapah", style: TextStyle(color: Colors.white)),
-                          selected: selectedFilters.contains("Tapah"),
-                          selectedColor: Colors.lightBlueAccent,
-                          checkmarkColor: Colors.white,
-                          onSelected: (selected) => _handleFilterSelection("Tapah", selected),
-                        ),
-                        FilterChip(
-                          label: const Text("Bidor", style: TextStyle(color: Colors.white)),
-                          selected: selectedFilters.contains("Bidor"),
-                          selectedColor: Colors.lightBlueAccent,
-                          checkmarkColor: Colors.white,
-                          onSelected: (selected) => _handleFilterSelection("Bidor", selected),
-                        ),
-                        FilterChip(
-                          label: const Text("Kampar", style: TextStyle(color: Colors.white)),
-                          selected: selectedFilters.contains("Kampar"),
-                          selectedColor: Colors.lightBlueAccent,
-                          checkmarkColor: Colors.white,
-                          onSelected: (selected) => _handleFilterSelection("Kampar", selected),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          StreamBuilder<QuerySnapshot>(
-            stream: selectedFilters.isEmpty || selectedFilters.contains("All")
-            ? FirebaseFirestore.instance
-                .collection("subjects")
-                .snapshots()
-            : FirebaseFirestore.instance
-                .collection("subjects")
-                .where("locality", arrayContainsAny: selectedFilters)
-                .snapshots(),
-            builder: (context, snapshot)
-            {
-              return !snapshot.hasData
-                  ? SliverToBoxAdapter(child: Center(child: circularProgress(),),)
-                  : SliverAlignedGrid.count(
-                crossAxisCount: 1,
-                //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
-                itemBuilder: (context, index)
-                {
-                  Subjects sModel = Subjects.fromJson(
-                    snapshot.data!.docs[index].data()! as Map<String ,dynamic>
-                  );
-                  //design for display tutors
-                  return SubjectsDesignWidget(
-                      subjectsModel: sModel,
-                      context: context
-                  );
-                },
-                itemCount: snapshot.data!.docs.length,
-              );
-            },
-          ),
-        ],
-      )
-      : TutorHomeScreen(),
+            StreamBuilder<QuerySnapshot>(
+              stream: selectedFilters.isEmpty || selectedFilters.contains("All")
+              ? FirebaseFirestore.instance
+                  .collection("subjects")
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection("subjects")
+                  .where("locality", arrayContainsAny: selectedFilters)
+                  .snapshots(),
+              builder: (context, snapshot)
+              {
+                return !snapshot.hasData
+                    ? SliverToBoxAdapter(child: Center(child: circularProgress(),),)
+                    : SliverAlignedGrid.count(
+                  crossAxisCount: 1,
+                  //staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                  itemBuilder: (context, index)
+                  {
+                    Subjects sModel = Subjects.fromJson(
+                      snapshot.data!.docs[index].data()! as Map<String ,dynamic>
+                    );
+                    //design for display tutors
+                    return SubjectsDesignWidget(
+                        subjectsModel: sModel,
+                        context: context
+                    );
+                  },
+                  itemCount: snapshot.data!.docs.length,
+                );
+              },
+            ),
+          ],
+        )
+        : TutorHomeScreen(),
+      ),
     );
   }
 }

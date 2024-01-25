@@ -29,14 +29,14 @@ class _ChooseUserState extends State<ChooseUser> {
               top: 150,
               child: Image.asset(
                 "images/chooseBg.png",
-                height: 270,
+                height: MediaQuery.of(context).size.height*0.3,
               ),
             ),
             Positioned(
               top: 150,
               child: Image.asset(
                 "images/LOGO.png",
-                height: 100, // Adjust the height as needed
+                height: MediaQuery.of(context).size.height* 0.15, // Adjust the height as needed
               ),
             ),
             Column(

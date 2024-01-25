@@ -17,8 +17,9 @@ class TrackingAddressDesign extends StatefulWidget {
   final String? orderID;
   final String? tutorID;
   final String? orderByParent;
+  final String? rated;
 
-  TrackingAddressDesign({this.model, this.orderStatus, this.orderID, this.tutorID, this.orderByParent});
+  TrackingAddressDesign({this.model, this.orderStatus, this.orderID, this.tutorID, this.orderByParent, this.rated});
 
   @override
   State<TrackingAddressDesign> createState() => _TrackingAddressDesignState();
@@ -191,15 +192,13 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
 
     return averageRating;
   }
-  getOrderInfo()
+  getOrderInfo(String orderID)
   {
     FirebaseFirestore.instance
-        .collection("tutors")
-        .doc(widget.tutorID!).collection("rating")
-        .doc(widget.orderID!)
+        .collection("orders") .doc(orderID)
         .get().then((DocumentSnapshot)
     {
-      rated = DocumentSnapshot.data()!['rated'].toString() == "null" ? "0" : DocumentSnapshot.data()!['rated'].toString();
+      rated = DocumentSnapshot.data()!['rated'].toString() == "null" ? "false" : DocumentSnapshot.data()!['rated'].toString();
 
     });
   }
@@ -207,7 +206,7 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
   @override
   void initState() {
     super.initState();
-    getOrderInfo();
+    getOrderInfo(widget.orderID!);
   }
 
 
@@ -301,10 +300,8 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
                         //cancel tutoring
                         UserLocation? uLocation = UserLocation();
                         uLocation!.getCurrentLocation();
-
                         canceledBookTutor(context, widget.orderID!, widget.tutorID!, widget.orderByParent!, true);
                       }
-
                     },
                     child: Container(
                       decoration:  BoxDecoration(
@@ -397,8 +394,6 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
         ),
         sharedPreferences!.getString("usertype")! == "Parent" ? Padding(padding: const EdgeInsets.all(8.0),
             child: Center(
-                child:Visibility(
-                  visible: rated == "false" ? true : false ,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -463,7 +458,6 @@ class _TrackingAddressDesignState extends State<TrackingAddressDesign> {
                        // Text("Average Rating: ${getAverageRating(widget.tutorID!).toString()}"),
                       ]
                   ),
-                )
             )) : Container(),
       ],
     );

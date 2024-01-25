@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/book_in_progress_screen.dart';
-import 'package:tuition_app/mainScreeen/earnings_tutor_screen.dart';
 import 'package:tuition_app/mainScreeen/history_tutor_screen.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
 import 'package:tuition_app/mainScreeen/not_yet_tutored_screen.dart';
@@ -70,16 +69,6 @@ class MyDrawerTutor extends StatelessWidget {
                   ),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.monetization_on,color: Colors.black,),
-                  title: const Text(
-                    "My Earnings",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=> TutorEarningsScreen()));
                   },
                 ),
                 ListTile(

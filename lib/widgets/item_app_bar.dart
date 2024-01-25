@@ -51,16 +51,6 @@ class _ItemAppBarState extends State<ItemAppBar> {
       // toolbarHeight: 200,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      // flexibleSpace: Container(
-      //   child:
-      //   FadeInImage.assetNetwork(
-      //       image: tutorAvatarUrl ?? "https://cdn.discordapp.com/attachments/1186076047872110712/1192522621678534716/image.png?ex=65a9623d&is=6596ed3d&hm=ed7c4b2dcda7bc3cc27f342fe91fbfb3685d475a16820e3425ee486e2aa211f8&" , // Use placeholder if image loading fails
-      //       height: MediaQuery.of(context).size.height,
-      //       width: MediaQuery.of(context).size.width,
-      //       fit: BoxFit.cover,
-      //       placeholder: "images/placeholder.jpg",
-      //     )
-      // ),
       leading: IconButton(
         icon: const CircleAvatar(child: Icon(Icons.arrow_back)),
         onPressed: ()
@@ -68,10 +58,6 @@ class _ItemAppBarState extends State<ItemAppBar> {
           Navigator.pop(context);
         },
       ),
-      // title:  Text(
-      //   tutorName ?? "TutorGO",
-      //   style: TextStyle(fontSize: 30, fontFamily: "Bebas"),
-      // ),
       centerTitle: true,
       actions: [
         Stack(

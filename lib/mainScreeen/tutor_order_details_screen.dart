@@ -21,6 +21,7 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
   String orderStatus = "";
   String orderByParent = "";
   String tutorUID = "";
+  String rated = "";
 
 
 
@@ -33,6 +34,7 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
       orderStatus = DocumentSnapshot.data()!['status'].toString();
       orderByParent = DocumentSnapshot.data()!['orderBy'].toString();
       tutorUID = DocumentSnapshot.data()!['tutorUID'].toString();
+      rated = DocumentSnapshot.data()!['rated'].toString();
 
     });
   }
@@ -123,6 +125,7 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
                         orderID: widget.orderID,
                         tutorID:tutorUID,
                         orderByParent: orderByParent,
+                        rated: rated,
                       )
                           : Center(child: circularProgress(),);
                     },

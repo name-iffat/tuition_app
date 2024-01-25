@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class TotalAmount extends ChangeNotifier
 {
   double _totalAmount = 0;
-
   double get tAmount => _totalAmount;
 
   displayTotalAmount(double number) async
