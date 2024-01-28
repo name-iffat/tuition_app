@@ -15,6 +15,7 @@ import 'package:tuition_app/global/global.dart';
 import '../models/tutors.dart';
 import '../widgets/carousel_card.dart';
 class FullMap extends StatefulWidget {
+
   const FullMap();
 
   @override
@@ -40,10 +41,20 @@ class FullMapState extends State<FullMap> {
     uLocation.getCurrentLocation();
     _initialCurrentPosition = CameraOptions( center: Point(coordinates: Position(position!.longitude, position!.latitude)).toJson(),
       zoom: 15.0,);
+    getCameraOptionsFromFirebase();
+    mapboxMap?.flyTo(
+      _initialCurrentPosition,
+      MapAnimationOptions(duration: 2000, startDelay: 0),
+    );
+    mapboxMap?.setCamera(_initialCurrentPosition);
 
+    mapboxMap?.location.updateSettings(LocationComponentSettings(
+      enabled: true,
+      pulsingEnabled: true,
+    )
+    );
 
     // initialize map symbols in the same order as carousel widgets
-    getCameraOptionsFromFirebase();
     // _kTutorsList = List<CameraOptions>.generate(
     //     collectionLength,
     //         (index) => CameraOptions(

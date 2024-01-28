@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tuition_app/global/global.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
-import '../mainScreeen/home_screen.dart';
 import '../widgets/error_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storageRef;
 
@@ -56,7 +56,7 @@ class _SubjectUploadScreenState extends State<SubjectUploadScreen> {
           icon: const Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: ()
           {
-            Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> const TutorHomeScreen()));
           },
         ),
 

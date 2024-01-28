@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/authentication/choose_user.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -16,6 +17,7 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen>
 {
+  String userType = sharedPreferences!.getString("usertype")!;
 
   startTimer()
   {
@@ -23,7 +25,12 @@ class _MySplashScreenState extends State<MySplashScreen>
       //if user already logged in
       if(firebaseAuth.currentUser != null)
         {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
+          if(userType == "Parent")
+          {Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));}
+          else
+          {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const TutorHomeScreen()));
+          }
         }
       //if user not logged in
       else

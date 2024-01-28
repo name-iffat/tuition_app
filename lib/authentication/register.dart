@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/widgets/custom_text_field.dart';
 import 'package:tuition_app/widgets/error_dialog.dart';
 import 'package:tuition_app/widgets/loading_dialog.dart';
@@ -180,8 +181,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         saveDataToFirestore(currentUser!).then((value) {
           Navigator.pop(context);
           //send user to homePage
-          Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
-          Navigator.pushReplacement(context, newRoute);
+          if(widget.userType == "Parent"){
+            Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
+            Navigator.pushReplacement(context, newRoute);
+          }
+          else
+          {
+            Route newRoute = MaterialPageRoute(builder: (c) => TutorHomeScreen());
+            Navigator.pushReplacement(context, newRoute);
+          }
         });
       }
   }

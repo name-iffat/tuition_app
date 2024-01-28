@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 
 import '../assistantMethods/get_current_location.dart';
 import '../global/global.dart';
@@ -102,7 +102,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
       });
     });
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> HomeScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> TutorHomeScreen()));
   }
   
   getBookTotalAmount()
@@ -235,7 +235,7 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
               child: InkWell(
                 onTap: ()
                 {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TutorHomeScreen()));
                 },
                 child: Container(
                   decoration:  BoxDecoration(

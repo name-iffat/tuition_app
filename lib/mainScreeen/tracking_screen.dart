@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/get_current_location.dart';
 import 'package:tuition_app/mainScreeen/book_incoming.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/maps/map_utils.dart';
 
 import '../global/global.dart';
-import 'home_screen.dart';
 
 class TrackingScreen extends StatefulWidget
 {
@@ -172,7 +172,7 @@ class _TrackingScreenState extends State<TrackingScreen>
               child: InkWell(
                 onTap: ()
                 {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TutorHomeScreen()));
                 },
                 child: Container(
                   decoration:  BoxDecoration(

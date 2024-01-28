@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
+
+import '../global/global.dart';
 
 class StatusBanner extends StatelessWidget {
 
@@ -11,6 +14,7 @@ class StatusBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context)
   {
+    String userType = sharedPreferences!.getString("usertype")!;
     String message;
     IconData iconData;
 
@@ -37,7 +41,12 @@ class StatusBanner extends StatelessWidget {
           GestureDetector(
             onTap: ()
             {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+              if(userType=="Parent")
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+              else if(userType=="Tutor")
+              {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const TutorHomeScreen()));
+              }
             },
             child: const Icon(
               Icons.arrow_back,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/authentication/auth_screen.dart';
 import 'package:tuition_app/global/global.dart';
 import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/widgets/error_dialog.dart';
 import 'package:tuition_app/widgets/loading_dialog.dart';
 import '../widgets/custom_text_field.dart';
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 if (!context.mounted) return;
                 Navigator.pop(context);
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const HomeScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=>  const TutorHomeScreen()));
               }
               else{
                 firebaseAuth.signOut();

@@ -5,7 +5,7 @@ import 'package:tuition_app/models/tutors.dart';
 
 import 'mapbox_request.dart';
 Tutors? tutorsModel;
-Future<Map> getDirectionsTutorAPIResponse( double sourceLat,double  sourceLng, double lat2,double lng2,String tutorName) async
+Future<Map> getDirectionsAPIResponse( double sourceLat,double  sourceLng, double lat2,double lng2,String tutorName) async
 {
 
 
@@ -35,4 +35,10 @@ void SaveDirectionsTutorAPIResponse(String tutorID, String response)
 {
   final id = tutorID;
   sharedPreferences!.setString("tutor_$id", response);
+}
+
+void SaveDirectionsParentAPIResponse(String parentID, String response)
+{
+  final id = parentID;
+  sharedPreferences!.setString("parent_$id", response);
 }

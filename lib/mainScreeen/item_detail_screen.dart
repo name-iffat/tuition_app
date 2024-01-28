@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:tuition_app/global/global.dart';
-import 'package:tuition_app/mainScreeen/home_screen.dart';
+import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/widgets/app_bar.dart';
 import 'package:tuition_app/widgets/simple_app_bar.dart';
 
@@ -37,7 +37,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           .collection("items")
           .doc(itemID)
           .delete();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const TutorHomeScreen()));
       Fluttertoast.showToast(msg: "Subject Deleted Successfully.");
     });
   }

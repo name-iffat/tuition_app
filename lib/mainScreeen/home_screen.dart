@@ -9,11 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tuition_app/assistantMethods/assistant_methods.dart';
 import 'package:tuition_app/assistantMethods/notification_service.dart';
 import 'package:tuition_app/global/global.dart';
-import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 import 'package:tuition_app/models/subjects.dart';
-import 'package:tuition_app/uploadScreen/subjects_upload_screen.dart';
 import 'package:tuition_app/widgets/my_drawer.dart';
-import 'package:tuition_app/widgets/my_drawer_tutor.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 
 import '../assistantMethods/directions_handler.dart';
@@ -117,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final tutorLat = tutorDoc.data()["lat"];
       final tutorLng = tutorDoc.data()["lng"];
 
-      Map modifiedResponse = await getDirectionsTutorAPIResponse(
+      Map modifiedResponse = await getDirectionsAPIResponse(
           position!.latitude,
           position!.longitude,
           tutorLat,
@@ -216,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String userType = sharedPreferences!.getString("usertype")! ;
+    //String userType = sharedPreferences!.getString("usertype")! ;
     //getDirectionAPI();
     return WillPopScope(
       onWillPop: () async{
@@ -250,20 +247,9 @@ class _HomeScreenState extends State<HomeScreen> {
             style: const TextStyle(fontSize: 30, fontFamily: "Bebas"),
           ),
           centerTitle: true,
-          actions: userType == "Tutor"
-          ? [
-            IconButton(
-              icon: const Icon(Icons.post_add, color: Colors.white,),
-              onPressed: ()
-              {
-                Navigator.push(context,MaterialPageRoute(builder: (c)=> const SubjectUploadScreen()));
-              },
-            ),
-          ] : null,
         ),
-        drawer: userType == "Parent" ? MyDrawer() : MyDrawerTutor(),
-        body: userType == "Parent"
-            ? CustomScrollView(
+        drawer: MyDrawer(),
+        body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
@@ -411,8 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ],
-        )
-        : TutorHomeScreen(),
+        ),
       ),
     );
   }
