@@ -22,6 +22,8 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
   String orderByParent = "";
   String tutorUID = "";
   String rated = "";
+  String rating = "0.0";
+
 
 
 
@@ -36,6 +38,23 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
       tutorUID = DocumentSnapshot.data()!['tutorUID'].toString();
       rated = DocumentSnapshot.data()!['rated'].toString();
 
+    }).then((DocumentSnapshot)
+    {
+      FirebaseFirestore.instance
+          .collection("tutors")
+          .doc(tutorUID).collection("rating").doc(widget.orderID).get().then((DocumentSnapshot)
+      {
+        rating = DocumentSnapshot.data()!['rating'].toString();
+      }).then((DocumentSnapshot)
+      {
+        setState(() {
+          orderStatus = orderStatus;
+          orderByParent = orderByParent;
+          tutorUID = tutorUID;
+          rated = rated;
+          rating = rating;
+        });
+      });
     });
   }
   @override
@@ -43,6 +62,17 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
     super.initState();
 
     getOrderInfo();
+  }
+
+  Widget _buildTextIcon(IconData icon,Color color, String text) {
+    return  Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color, size: 20,),
+        Text(text, style: const TextStyle(fontSize: 20, fontFamily: "Poppins")),
+      ],
+    );
+
   }
 
   @override
@@ -83,6 +113,10 @@ class _TutorOrderDetailsScreenState extends State<TutorOrderDetailsScreen> {
                         ),
                       ),
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _buildTextIcon(Icons.star, Colors.amber, rating),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

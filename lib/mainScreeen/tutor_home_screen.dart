@@ -10,6 +10,7 @@ import 'package:tuition_app/models/subjects.dart';
 import 'package:tuition_app/widgets/info_design.dart';
 import 'package:tuition_app/widgets/progress_bar.dart';
 import 'package:tuition_app/widgets/text_widget.dart';
+import 'package:tuition_app/widgets/tutor_information.dart';
 
 import '../assistantMethods/directions_handler.dart';
 import '../assistantMethods/get_current_location.dart';
@@ -220,7 +221,11 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
         drawer: MyDrawerTutor(),
         body: CustomScrollView(
           slivers: [
+            SliverToBoxAdapter(
+              child: TutorInformation(),
+            ),
             SliverPersistentHeader(pinned: true,delegate: TextWidgetHeader(title: "My Collections")),
+
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("tutors")

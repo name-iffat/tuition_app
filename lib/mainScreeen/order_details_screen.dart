@@ -22,6 +22,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   String orderStatus = "";
   String orderByParent = "";
   String tutorUID = "";
+  String rating = "";
 
   getOrderInfo()
   {
@@ -32,7 +33,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       orderStatus = documentSnapshot.data()!['status'].toString();
       orderByParent = documentSnapshot.data()!['orderBy'].toString();
       tutorUID = documentSnapshot.data()!['tutorUID'].toString();
-
     });
   }
 

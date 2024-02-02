@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:tuition_app/assistantMethods/get_current_location.dart';
 import 'package:tuition_app/mainScreeen/book_incoming.dart';
 import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
-import 'package:tuition_app/maps/map_utils.dart';
 
 import '../global/global.dart';
+import 'map_tutor_screen.dart';
 
 class TrackingScreen extends StatefulWidget
 {
+
   String? purchaserId;
   String? purchaserAddress;
   String? tutorID;
@@ -77,6 +78,20 @@ class _TrackingScreenState extends State<TrackingScreen>
     )));
   }
 
+  ShowParentLocation(BuildContext context, String getOrderID, getTutorID, String purchaserId)
+  {
+    //send tutor to tracking screen
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TutorMap(
+      purchaserId: purchaserId,
+      purchaserAddress: widget.purchaserAddress,
+      purchaserLat: widget.purchaserLat,
+      purchaserLng: widget.purchaserLng,
+      tutorId: getTutorID,
+      getOrderId: getOrderID,
+    )
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +107,11 @@ class _TrackingScreenState extends State<TrackingScreen>
           GestureDetector(
             onTap: ()
             {
+              UserLocation? uLocation = UserLocation();
+              uLocation!.getCurrentLocation();
+              ShowParentLocation(context, widget.getOrderID!, widget.tutorID!, widget.purchaserId!);
               //show tutor current location towards
-              MapUtility.launchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
+              //MapUtility.launchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -4,7 +4,6 @@ import 'package:tuition_app/mainScreeen/tutor_home_screen.dart';
 
 import '../assistantMethods/get_current_location.dart';
 import '../global/global.dart';
-import '../maps/map_utils.dart';
 
 class BookIncomingScreen extends StatefulWidget
 {
@@ -150,41 +149,6 @@ class _BookIncomingScreenState extends State<BookIncomingScreen>
               "images/tutorlogin.png"
           ),
           const SizedBox(height: 5,),
-
-          GestureDetector(
-            onTap: ()
-            {
-              //show tutor current location towards
-              MapUtility.launchMapFromSourceToDestination(position!.latitude, position!.longitude, widget.purchaserLat, widget.purchaserLng);
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-                Image.asset(
-                  "images/LOGO.png",
-                  width: 50,
-                ),
-                const SizedBox(width: 7,),
-
-                Column(
-                  children: [
-                    const SizedBox(height: 12,),
-                    const Text(
-                      "Show Tutee Location",
-                      style: TextStyle(
-                        fontFamily: "Bebas",
-                        fontSize: 18,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                  ],
-                ),
-
-              ],
-            ),
-          ),
-          const SizedBox(height: 13,),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
