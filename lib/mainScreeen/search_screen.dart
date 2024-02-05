@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../models/tutors.dart';
-import '../widgets/info_design.dart';
-
+import 'package:tuition_app/widgets/subjects_design.dart';
+import '../models/subjects.dart';
 class SearchScreen extends StatefulWidget {
 
   @override
@@ -19,8 +17,8 @@ class _SearchScreenState extends State<SearchScreen>
   initSearchingTutor(String textEntered)
   {
     tutorsDocumentsList = FirebaseFirestore.instance
-        .collection("tutors")
-        .where("tutorName", isGreaterThanOrEqualTo: textEntered)
+        .collection("subjects")
+        .where("subjectTitle", isGreaterThanOrEqualTo: textEntered)
         .get();
   }
 
@@ -79,14 +77,11 @@ class _SearchScreenState extends State<SearchScreen>
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index)
                   {
-                    Tutors model = Tutors.fromJson(
-                      snapshot.data!.docs[index].data()! as Map<String, dynamic>
+                    Subjects sModel = Subjects.fromJson(
+                        snapshot.data!.docs[index].data()! as Map<String ,dynamic>
                     );
 
-                    return InfoDesignWidget.tutors(
-                        tutorsModel: model,
-                        context: context
-                    );
+                    return SubjectsDesignWidget(subjectsModel: sModel, context: context);
                   },
               )
               : const Center(child: Text("No Record Found"),);
