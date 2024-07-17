@@ -1,16 +1,6 @@
 # tuition_app
 
-A new Flutter project.
+A Flutter project that build for Android Mobile Application.
+An on-demand face-to-face mobile application that works something like Grabfood or Foodpanda but for booking a tutor to your house or place.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The map is being build with MapBox API to show location and distance of tutors.
